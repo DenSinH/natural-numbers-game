@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/static/level.css">
+        <script src="/static/packages/jquery/jquery-3.6.3.min.js"></script>
+        <script src="/static/packages/codemirror/codemirror-6.65.7.min.js"></script>
+        <script src="/static/packages/codemirror/coq.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/packages/codemirror/codemirror-6.65.7.min.css">
+
+        <script>
+            $(window).on("load", function() {
+                $(".tactic .header").on("click", function() {
+                    $(this).parent().find(".tactic-body").first().toggleClass("hidden");
+                })
+
+                var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+                    mode: "text/x-coq",
+                    indentUnit: 2,
+                    lineNumbers: true,
+                });
+                editor.setValue("");
+                editor.on("keyup", function(e) {
+                    // get text up to cursor
+                    let text = "";
+                    let line = e.doc.getCursor().line;
+                    let char = e.doc.getCursor().ch;
+                    for (let i = 0; i < line; i++) {
+                        text += e.doc.getLine(i) + "\n";
+                    }
+                    text += e.doc.getLine(line).substr(0, char);
+                    
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="navigation">
+            <div>
+                <div class="navbutton">Main Menu</div>
+                <div class="navbutton inactive">Previous Level</div>
+            </div>
+            <div><!-- Padding between buttons --></div>
+            <div>
+                <div class="navbutton">Reset</div>
+                <div class="navbutton">Next Level</div>
+            </div>
+        </div>
+        <div class="column-container">
+            <div class="column sidebar">
+                <div class="tactic">
+                    <div class="header">
+                        <h3><code>reflexivity</code></h3>
+                    </div>
+                    <div class="tactic-body hidden">
+                        This tactic blablabla
+                        <h5>Example</h5>
+                        This is an example blablabla
+                    </div>
+                </div>
+
+                <div class="tactic">
+                    <div class="header">
+                        <h3>Nested</h3>
+                    </div>
+                    <div class="tactic-body hidden">
+                        <div class="tactic">
+                            <div class="header">
+                                <h3><code>reflexivity</code></h3>
+                            </div>
+                            <div class="tactic-body hidden">
+                                This tactic blablabla
+                                <h5>Example</h5>
+                                This is an example blablabla
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column main">
+                <h1>Tutorial World</h1>
+                <h3>Level 1: The <code>reflexivity</code> tactic</h3>
+                
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Donec nec urna turpis. Curabitur efficitur, sem id 
+                ullamcorper pellentesque, nunc nisl molestie eros,
+                vulputate lobortis nibh arcu vitae urna. Aenean
+                ullamcorper turpis nibh, quis congue ligula aliquam 
+                nec. Donec ante turpis, consectetur eu tempus a, 
+                vestibulum ut dui. Suspendisse vitae laoreet mi.
+                Aliquam sit amet imperdiet urna. Sed molestie, 
+                neque vitae ultrices finibus, diam diam viverra 
+                magna, ut tempor eros tellus eget orci.
+                </p><p>
+                Phasellus interdum nunc in lectus auctor scelerisque. Integer nec faucibus odio, id posuere nisi. Mauris consectetur neque massa. Duis rutrum lectus nunc, vitae efficitur tortor maximus non. Vestibulum porta, ex euismod malesuada imperdiet, orci arcu luctus velit, non blandit metus nibh a massa. Fusce tristique tempor tortor vitae fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut placerat nibh non magna dapibus interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc quis risus at nisi sodales suscipit. Donec eu dolor nec ex finibus volutpat. Phasellus ultricies purus lacus, et scelerisque orci mollis bibendum. Suspendisse venenatis pellentesque ullamcorper. Phasellus condimentum pulvinar turpis blandit mattis.
+                </p><p>
+                Nunc at magna pellentesque, varius nunc ac, commodo mi. Mauris sit amet magna neque. Nullam lacinia sem id enim facilisis sodales. In hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean luctus iaculis mi nec pretium. Nunc vel nisi vitae velit elementum faucibus. Cras aliquam massa non egestas consequat. Nam sapien eros, aliquet nec enim ut, luctus placerat tellus. Pellentesque efficitur consectetur massa, at porta augue semper sollicitudin.
+                </p><p>
+                Sed feugiat nec nunc in elementum. Phasellus vitae faucibus est. Quisque vel ipsum pretium, auctor purus finibus, condimentum leo. Morbi eros arcu, pulvinar a tempor non, consequat vel nunc. Mauris commodo, dolor in sodales euismod, lorem urna hendrerit arcu, in rhoncus enim urna a eros. Etiam enim nisi, porttitor elementum lectus et, eleifend ornare nulla. Sed rhoncus dapibus tristique. Nam accumsan ex purus, vel cursus ex gravida at. Phasellus vulputate, libero ac iaculis lobortis, nisi est bibendum nisl, quis laoreet ipsum odio sit amet odio.
+                </p><p>
+                Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam tristique massa ut tincidunt interdum. Phasellus neque lorem, feugiat at neque sed, vulputate tempor leo. Nulla quis leo vel tellus pellentesque iaculis. Nunc aliquet felis et lectus mattis, nec tempor ligula viverra. Maecenas ante libero, ultrices convallis lacus a, consectetur posuere justo. Sed ultrices ullamcorper ipsum sed tincidunt. Ut consequat, eros in volutpat ultrices, mauris dolor tristique dolor, eget posuere metus ipsum ut libero. Aenean enim nisi, commodo sed dignissim in, pulvinar eget tortor. Sed neque sapien, posuere nec ornare ut, imperdiet et nulla. Etiam posuere libero id quam porta, et lobortis metus consectetur. Curabitur rutrum porttitor nunc sit amet fermentum. Aenean faucibus eget risus in tempor. Praesent in lobortis tellus. Maecenas commodo nisl cursus leo gravida, pellentesque condimentum augue sagittis.
+                </p><p>
+                Phasellus interdum nunc in lectus auctor scelerisque. Integer nec faucibus odio, id posuere nisi. Mauris consectetur neque massa. Duis rutrum lectus nunc, vitae efficitur tortor maximus non. Vestibulum porta, ex euismod malesuada imperdiet, orci arcu luctus velit, non blandit metus nibh a massa. Fusce tristique tempor tortor vitae fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut placerat nibh non magna dapibus interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc quis risus at nisi sodales suscipit. Donec eu dolor nec ex finibus volutpat. Phasellus ultricies purus lacus, et scelerisque orci mollis bibendum. Suspendisse venenatis pellentesque ullamcorper. Phasellus condimentum pulvinar turpis blandit mattis.
+                </p><p>
+                Nunc at magna pellentesque, varius nunc ac, commodo mi. Mauris sit amet magna neque. Nullam lacinia sem id enim facilisis sodales. In hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean luctus iaculis mi nec pretium. Nunc vel nisi vitae velit elementum faucibus. Cras aliquam massa non egestas consequat. Nam sapien eros, aliquet nec enim ut, luctus placerat tellus. Pellentesque efficitur consectetur massa, at porta augue semper sollicitudin.
+                </p><p>
+                Sed feugiat nec nunc in elementum. Phasellus vitae faucibus est. Quisque vel ipsum pretium, auctor purus finibus, condimentum leo. Morbi eros arcu, pulvinar a tempor non, consequat vel nunc. Mauris commodo, dolor in sodales euismod, lorem urna hendrerit arcu, in rhoncus enim urna a eros. Etiam enim nisi, porttitor elementum lectus et, eleifend ornare nulla. Sed rhoncus dapibus tristique. Nam accumsan ex purus, vel cursus ex gravida at. Phasellus vulputate, libero ac iaculis lobortis, nisi est bibendum nisl, quis laoreet ipsum odio sit amet odio.
+                </p><p>
+                Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam tristique massa ut tincidunt interdum. Phasellus neque lorem, feugiat at neque sed, vulputate tempor leo. Nulla quis leo vel tellus pellentesque iaculis. Nunc aliquet felis et lectus mattis, nec tempor ligula viverra. Maecenas ante libero, ultrices convallis lacus a, consectetur posuere justo. Sed ultrices ullamcorper ipsum sed tincidunt. Ut consequat, eros in volutpat ultrices, mauris dolor tristique dolor, eget posuere metus ipsum ut libero. Aenean enim nisi, commodo sed dignissim in, pulvinar eget tortor. Sed neque sapien, posuere nec ornare ut, imperdiet et nulla. Etiam posuere libero id quam porta, et lobortis metus consectetur. Curabitur rutrum porttitor nunc sit amet fermentum. Aenean faucibus eget risus in tempor. Praesent in lobortis tellus. Maecenas commodo nisl cursus leo gravida, pellentesque condimentum augue sagittis.
+                Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam tristique massa ut tincidunt interdum. Phasellus neque lorem, feugiat at neque sed, vulputate tempor leo. Nulla quis leo vel tellus pellentesque iaculis. Nunc aliquet felis et lectus mattis, nec tempor ligula viverra. Maecenas ante libero, ultrices convallis lacus a, consectetur posuere justo. Sed ultrices ullamcorper ipsum sed tincidunt. Ut consequat, eros in volutpat ultrices, mauris dolor tristique dolor, eget posuere metus ipsum ut libero. Aenean enim nisi, commodo sed dignissim in, pulvinar eget tortor. Sed neque sapien, posuere nec ornare ut, imperdiet et nulla. Etiam posuere libero id quam porta, et lobortis metus consectetur. Curabitur rutrum porttitor nunc sit amet fermentum. Aenean faucibus eget risus in tempor. Praesent in lobortis tellus. Maecenas commodo nisl cursus leo gravida, pellentesque condimentum augue sagittis.
+                </p><p>
+                Phasellus interdum nunc in lectus auctor scelerisque. Integer nec faucibus odio, id posuere nisi. Mauris consectetur neque massa. Duis rutrum lectus nunc, vitae efficitur tortor maximus non. Vestibulum porta, ex euismod malesuada imperdiet, orci arcu luctus velit, non blandit metus nibh a massa. Fusce tristique tempor tortor vitae fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut placerat nibh non magna dapibus interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc quis risus at nisi sodales suscipit. Donec eu dolor nec ex finibus volutpat. Phasellus ultricies purus lacus, et scelerisque orci mollis bibendum. Suspendisse venenatis pellentesque ullamcorper. Phasellus condimentum pulvinar turpis blandit mattis.
+                </p><p>
+                Nunc at magna pellentesque, varius nunc ac, commodo mi. Mauris sit amet magna neque. Nullam lacinia sem id enim facilisis sodales. In hac habitasse platea dictumst. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean luctus iaculis mi nec pretium. Nunc vel nisi vitae velit elementum faucibus. Cras aliquam massa non egestas consequat. Nam sapien eros, aliquet nec enim ut, luctus placerat tellus. Pellentesque efficitur consectetur massa, at porta augue semper sollicitudin.
+                </p><p>
+                Sed feugiat nec nunc in elementum. Phasellus vitae faucibus est. Quisque vel ipsum pretium, auctor purus finibus, condimentum leo. Morbi eros arcu, pulvinar a tempor non, consequat vel nunc. Mauris commodo, dolor in sodales euismod, lorem urna hendrerit arcu, in rhoncus enim urna a eros. Etiam enim nisi, porttitor elementum lectus et, eleifend ornare nulla. Sed rhoncus dapibus tristique. Nam accumsan ex purus, vel cursus ex gravida at. Phasellus vulputate, libero ac iaculis lobortis, nisi est bibendum nisl, quis laoreet ipsum odio sit amet odio.
+                </p>
+                <div class="editor">
+                    <textarea id="editor"></textarea>
+                </div>    
+            </div>
+            <div class="column compilers">
+                <div class="compiler">
+                    <div class="header">
+                        <h3>Goals</h3>
+                    </div>
+                    <div class="info">
+                        <div class="info-header">
+                            <code>line 30:12</code>
+                        </div>
+                        <div class="info-body">
+                            <!--this will never be rendered like this, so don't mind the indentation-->
+                            <pre>
+example-code.
+newline.
+another one.
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messages">
+                    <div class="header">
+                        <h3>Messages</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

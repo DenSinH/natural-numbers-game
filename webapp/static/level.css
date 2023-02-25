@@ -1,0 +1,120 @@
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.navigation {
+    background-color: lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 60px;
+}
+
+.navigation div {
+    flex: 1 1 0;
+}
+
+.navbutton {
+    background-color: lightslategray;
+    padding: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.navbutton:hover {
+    background-color: lightgray;
+}
+
+.navbutton.inactive, .navbutton.inactive:hover {
+    cursor: default;
+    background-color: lightgray;
+}
+
+.column-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: calc(100% - 60px);
+}
+
+.column.main {
+    flex: 3 1 0;
+}
+
+#editor {
+    height: 20em;
+    width: 100%;
+}
+
+.column {
+    flex: 1 1 0;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.tactic {
+    border: double 1px black;
+}
+
+.tactic .header {
+    cursor: pointer;
+}
+
+.header {
+    background-color: lightslategray;
+    padding: 5px 20px;
+}
+
+.tactic-body {
+    padding: 10px;
+}
+
+.column.compilers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.compiler, .messages {
+    flex: 1 1 0;
+    border: double 3px black;
+}
+
+.hidden {
+    display: none;
+}
+
+.info-header {
+    margin: 5px 10px;
+    font-weight: bold;
+    font-size: 1.25em;
+    border-bottom: 1px solid black;
+}
+
+.info-body {
+    padding-left: 10px;
+}
+
+.info-body pre {
+    margin: 0;
+}
