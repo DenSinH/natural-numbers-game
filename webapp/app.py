@@ -7,13 +7,17 @@ app = Sanic(__name__)
 app.static("/static", "./static")
 
 @app.route("/")
-async def test(req):
-    return res.text("I\'m a teapot", status=418)
+@app.ext.template("index.html")
+async def index(req):
+    return {}
 
-@app.route("/test")
+@app.route("/level")
 @app.ext.template("level.html")
 async def level(request: Request):
-    return {"host": request.host}
+    return {
+        "host": request.host,
+        "protocol": "ws" if request.scheme == "http" else "wss"
+    }
 
 @app.websocket("/compile")
 async def compile(request: Request, ws: Websocket):
