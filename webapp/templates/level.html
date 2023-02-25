@@ -9,15 +9,26 @@
         <link rel="stylesheet" type="text/css" href="/static/packages/codemirror/codemirror-6.65.7.min.css">
 
         <script>
-            const socket = new WebSocket("{{ protocol }}://{{ host }}{{ url_for('compile') }}");
-            socket.addEventListener("open", (event) => {
-                console.log("Connected!");
-            });
+            var socket;
+            function initSocket(protocol) {
+                socket = new WebSocket(`${protocol}://{{ host }}{{ url_for('compile') }}`);
+                socket.onerror = function (error) {
+                    if (error.currentTarget.url.startsWith("wss")) {
+                        initSocket("ws")
+                    }
+                }
 
-            socket.addEventListener("message", (event) => {
-                let data = JSON.parse(event.data);
-                console.log(data);
-            });
+                socket.addEventListener("open", (event) => {
+                    console.log("Connected!");
+                });
+
+                socket.addEventListener("message", (event) => {
+                    let data = JSON.parse(event.data);
+                    console.log(data);
+                });
+            }
+
+            initSocket("wss");
 
             var typingTimer;
             const doneTypingInterval = 250; // ms

@@ -16,7 +16,6 @@ async def index(req):
 async def level(request: Request):
     return {
         "host": request.host,
-        "protocol": "ws" if request.scheme == "http" else "wss"
     }
 
 @app.websocket("/compile")
