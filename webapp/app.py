@@ -1,6 +1,7 @@
 from jinja2.filters import FILTERS
 from sanic import Sanic, Request, Websocket
-from sanic import response, exceptions
+from sanic import response
+from sanic import exceptions
 
 import json
 import re
@@ -30,12 +31,18 @@ async def level_redirect(request: Request):
 @app.get("/level/<world:int>/<level:int>")
 @app.ext.template("level.html")
 async def level(request: Request, world: int, level: int):
-    world, level = get_level(world, level)
+    try:
+        world, level = get_level(world, level)
+    except IndexError as e:
+        raise exceptions.NotFound(*e.args)
 
     tactics  = get_tactics(world, level)
     theorems = get_theorems(world, level)
 
+    print(request.scheme)
+    print(request.protocol)
     return {
+        "scheme": request.scheme,
         "host": request.host,
         "tactics": tactics,
         "theorems": theorems,

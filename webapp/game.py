@@ -8,11 +8,11 @@ with open("data/worlds.json", "r") as f:
 
 
 def get_level(world, level):
-    if world > len(WORLDS):
-        raise exceptions.NotFound(f"Could not find world with index {world}")
+    if world >= len(WORLDS):
+        raise IndexError(f"Could not find world with index {world}")
     _world = WORLDS[world]
-    if level > len(_world["levels"]):
-        raise exceptions.NotFound(f"Could not find level with index {level} in world {world['name']}")
+    if level >= len(_world["levels"]):
+        raise IndexError(f"Could not find level with index {level} in world {_world['name']}")
     _level = _world["levels"][level]
 
     return _world, _level
