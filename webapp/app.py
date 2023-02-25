@@ -1,7 +1,7 @@
-from sanic import Sanic, Request
+from sanic import Sanic, Request, Websocket
 from sanic import response as res
 
-import os
+import json
 
 app = Sanic(__name__)
 app.static("/static", "./static")
@@ -13,8 +13,19 @@ async def test(req):
 @app.route("/test")
 @app.ext.template("level.html")
 async def level(request: Request):
-    return {}
+    return {"host": request.host}
+
+@app.websocket("/compile")
+async def compile(request: Request, ws: Websocket):
+    while True:
+        code = await ws.recv()
+        # todo: coqtop
+
+        await ws.send(json.dumps({
+            "goal": "goal",
+            "messages": [],
+            "errors": []
+        }))
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=80)

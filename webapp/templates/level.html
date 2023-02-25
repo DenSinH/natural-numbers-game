@@ -9,6 +9,19 @@
         <link rel="stylesheet" type="text/css" href="/static/packages/codemirror/codemirror-6.65.7.min.css">
 
         <script>
+            const socket = new WebSocket("ws://{{ host }}{{ url_for('compile') }}");
+            socket.addEventListener("open", (event) => {
+                console.log("Connected!");
+            });
+
+            socket.addEventListener("message", (event) => {
+                let data = JSON.parse(event.data);
+                console.log(data);
+            });
+
+            var typingTimer;
+            const doneTypingInterval = 250; // ms
+
             $(window).on("load", function() {
                 $(".tactic .header").on("click", function() {
                     $(this).parent().find(".tactic-body").first().toggleClass("hidden");
@@ -20,16 +33,22 @@
                     lineNumbers: true,
                 });
                 editor.setValue("");
+                editor.on("keydown", function(e) { clearTimeout(typingTimer); });
                 editor.on("keyup", function(e) {
-                    // get text up to cursor
-                    let text = "";
-                    let line = e.doc.getCursor().line;
-                    let char = e.doc.getCursor().ch;
-                    for (let i = 0; i < line; i++) {
-                        text += e.doc.getLine(i) + "\n";
-                    }
-                    text += e.doc.getLine(line).substr(0, char);
-                    
+                    clearTimeout(typingTimer);
+
+                    // renew timer
+                    typingTimer = setTimeout(() => {
+                        // get text up to cursor
+                        let text = "";
+                        let line = e.doc.getCursor().line;
+                        let char = e.doc.getCursor().ch;
+                        for (let i = 0; i < line; i++) {
+                            text += e.doc.getLine(i) + "\n";
+                        }
+                        text += e.doc.getLine(line).substr(0, char);
+                        socket.send(text);
+                    }, doneTypingInterval);
                 });
             });
         </script>
