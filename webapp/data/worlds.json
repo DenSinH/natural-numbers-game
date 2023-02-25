@@ -1,0 +1,22 @@
+{
+    "worlds": [
+        {
+            "world": 0,
+            "name": "Tutorial world",
+            "levels": [
+                {
+                    "name": "The `reflexivity` tactic",
+                    "lemma": "Lemma example1 (x : mynat) : x = x.",
+                    "tactics": "reflexivity",
+                    "theorems": null
+                },
+                {
+                    "name": "The `rewrite` tactic",
+                    "lemma": "Lemma test (x y z : mynat) (h : x = y + z) : x + z = y + z + z.",
+                    "tactics": "rewrite",
+                    "theorems": null
+                }
+            ]
+        }
+    ]
+}

@@ -88,6 +88,10 @@ body {
     padding: 10px;
 }
 
+pre.example {
+    overflow-x: hidden;
+}
+
 .column.compilers {
     display: flex;
     flex-direction: column;

@@ -1,0 +1,65 @@
+{
+    "tactics": [
+        {
+            "name": "reflexivity",
+            "description": "Solves the goal if it is a trivial equality.",
+            "example": "Theorem ft : 41 + 1 = 42.\nProof.\n  reflexivity."
+        },
+        {
+            "name": "rewrite",
+            "description": "Given some known equality `a = b`, the rewrite tactic lets you replace `a` with `b` or vice versa in a goal or hypothesis"
+        }
+    ],
+    "theorems": [
+        {
+            "world": 0,
+            "theorems": [
+                {
+                    "name": "add_zero",
+                    "statement": "Fact add_zero (n : mynat) : n + O = n."
+                },
+                {
+                    "name": "add_succ",
+                    "statement": "Fact add_succ (m n : mynat) : n + (S m) = S (n + m)."
+                }
+            ]
+        },
+        {
+            "world": 1,
+            "theorems": [
+                {
+                    "name": "add_zero",
+                    "statement": "Fact add_zero (n : mynat) : n + O = n."
+                },
+                {
+                    "name": "add_succ",
+                    "statement": "Fact add_succ (m n : mynat) : n + (S m) = S (n + m)."
+                },
+                {
+                    "name": "zero_add",
+                    "statement": "Lemma zero_add (n : mynat) : O + n = n."
+                },
+                {
+                    "name": "add_assoc",
+                    "statement": "Lemma add_assoc (a b c : mynat) : (a + b) + c = a + (b + c)."
+                },
+                {
+                    "name": "succ_add",
+                    "statement": "Lemma succ_add (a b : mynat) : S a + b = S (a + b)."
+                },
+                {
+                    "name": "add_comm",
+                    "statement": "Lemma add_comm (a b : mynat) : a + b = b + a."
+                },
+                {
+                    "name": "one_eq_succ_zero",
+                    "statement": "Fact one_eq_succ_zero : I = S O."
+                },
+                {
+                    "name": "succ_eq_add_one",
+                    "statement": "Lemma succ_eq_add_one (n : mynat) : S n = n + I."
+                }
+            ]
+        }
+    ]
+}
