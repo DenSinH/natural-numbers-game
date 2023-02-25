@@ -5,14 +5,18 @@ from sanic import exceptions
 
 import json
 import re
+import os
+
 
 def format_code_in_text(text):
     return re.sub(r"`(.*?)`", r"<code>\1</code>", text)
 
-FILTERS["format_code_in_text"] = format_code_in_text
+SECURE = "SECURE" not in os.environ or int(os.environ["SECURE"])
 
 app = Sanic(__name__)
 app.static("/static", "./static")
+app.ext.environment.filters["format_code_in_text"] = format_code_in_text
+app.ext.environment.globals["WEBSOCKET_SCHEME"] = "wss" if SECURE else "ws"
 
 from game import *
 
@@ -39,10 +43,7 @@ async def level(request: Request, world: int, level: int):
     tactics  = get_tactics(world, level)
     theorems = get_theorems(world, level)
 
-    print(request.scheme)
-    print(request.protocol)
     return {
-        "scheme": request.scheme,
         "host": request.host,
         "tactics": tactics,
         "theorems": theorems,

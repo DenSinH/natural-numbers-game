@@ -14,23 +14,16 @@
             }
         </style>
         <script>
-            // {{ scheme }}
             var socket;
             const socketReconnectInterval = 2000; // ms
 
-            // todo: get protocol at request time
-            function initSocket(protocol) {
-                socket = new WebSocket(`${protocol}://{{ host }}{{ url_for('compile') }}`);
-                socket.onerror = function(error) {
-                    if (error.currentTarget.url.startsWith("wss")) {
-                        initSocket("ws")
-                    }
-                }
+            function initSocket() {
+                socket = new WebSocket("{{ WEBSOCKET_SCHEME }}://{{ host }}{{ url_for('compile') }}");
 
-                // socket.onclose = function() {
-                //     console.log("close");
-                //     setTimeout(() => initSocket(protocol), socketReconnectInterval);
-                // }
+                socket.onclose = function(event) {
+                    // attempt reconnect on close (also happens on error)
+                    setTimeout(() => initSocket(), socketReconnectInterval);
+                };
 
                 socket.addEventListener("open", (event) => {
                     console.log("Connected!");
