@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="/static/packages/codemirror/codemirror-6.65.7.min.css">
 
         <script>
-            const socket = new WebSocket("ws://{{ host }}{{ url_for('compile') }}");
+            const socket = new WebSocket("{{ protocol }}://{{ host }}{{ url_for('compile') }}");
             socket.addEventListener("open", (event) => {
                 console.log("Connected!");
             });
