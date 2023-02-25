@@ -37,7 +37,7 @@ def get_theorems(world, level):
             if w["world"] < world["world"]:
                 theorems.append(w)
             # only theorem up to the one marked in level
-            elif w["world"] == world:
+            elif w["world"] == world["world"]:
                 _w = dict(w)
                 _w["theorems"] = []
                 for t in w["theorems"]:

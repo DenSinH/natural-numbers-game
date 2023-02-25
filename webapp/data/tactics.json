@@ -16,11 +16,11 @@
             "theorems": [
                 {
                     "name": "add_zero",
-                    "statement": "Fact add_zero (n : mynat) : n + O = n."
+                    "statement": "Fact add_zero (n : mynat) :\n   n + O = n."
                 },
                 {
                     "name": "add_succ",
-                    "statement": "Fact add_succ (m n : mynat) : n + (S m) = S (n + m)."
+                    "statement": "Fact add_succ (m n : mynat) :\n   n + (S m) = S (n + m)."
                 }
             ]
         },
@@ -29,35 +29,35 @@
             "theorems": [
                 {
                     "name": "add_zero",
-                    "statement": "Fact add_zero (n : mynat) : n + O = n."
+                    "statement": "Fact add_zero (n : mynat) :\n   n + O = n."
                 },
                 {
                     "name": "add_succ",
-                    "statement": "Fact add_succ (m n : mynat) : n + (S m) = S (n + m)."
+                    "statement": "Fact add_succ (m n : mynat) :\n   n + (S m) = S (n + m)."
                 },
                 {
                     "name": "zero_add",
-                    "statement": "Lemma zero_add (n : mynat) : O + n = n."
+                    "statement": "Lemma zero_add (n : mynat) :\n   O + n = n."
                 },
                 {
                     "name": "add_assoc",
-                    "statement": "Lemma add_assoc (a b c : mynat) : (a + b) + c = a + (b + c)."
+                    "statement": "Lemma add_assoc (a b c : mynat) :\n   (a + b) + c = a + (b + c)."
                 },
                 {
                     "name": "succ_add",
-                    "statement": "Lemma succ_add (a b : mynat) : S a + b = S (a + b)."
+                    "statement": "Lemma succ_add (a b : mynat) :\n   S a + b = S (a + b)."
                 },
                 {
                     "name": "add_comm",
-                    "statement": "Lemma add_comm (a b : mynat) : a + b = b + a."
+                    "statement": "Lemma add_comm (a b : mynat) :\n   a + b = b + a."
                 },
                 {
                     "name": "one_eq_succ_zero",
-                    "statement": "Fact one_eq_succ_zero : I = S O."
+                    "statement": "Fact one_eq_succ_zero :\n   I = S O."
                 },
                 {
                     "name": "succ_eq_add_one",
-                    "statement": "Lemma succ_eq_add_one (n : mynat) : S n = n + I."
+                    "statement": "Lemma succ_eq_add_one (n : mynat) :\n   S n = n + I."
                 }
             ]
         }

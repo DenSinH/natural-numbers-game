@@ -85,29 +85,29 @@
             </div>
         </div>
         <div class="column-container">
-            <div class="column sidebar">
+            <div class="column tactics">
                 {%- if tactics -%}
                 <div class="tactic">
                     <div class="header">
                         <h3>Tactics</h3>
                     </div>
-                    {%- for tactic in tactics -%}
                     <div class="tactic-body hidden">
+                        {%- for tactic in tactics -%}
                         <div class="tactic">
                             <div class="header">
                                 <h3><code>{{ tactic["name"] }}</code></h3>
                             </div>
                             <div class="tactic-body hidden">
                                 <h5>Description</h5>
-                                {{ tactic["description"] }}
+                                {{ tactic["description"]|format_code_in_text|safe }}
                                 {%- if tactic["example"] -%}
                                 <h5>Example</h5>
                                 <pre class="example">{{ tactic["example"] }}</pre>
                                 {%- endif -%}
                             </div>
                         </div>
+                        {%- endfor -%}
                     </div>
-                    {%- endfor -%}
                 </div>
                 {%- endif -%}
                 
@@ -125,7 +125,7 @@
                             <div class="tactic-body hidden">
                                 {%- for theorem in world["theorems"] -%}
                                 <div class="theorem">
-                                    <code>{{ theorem["statement"] }}</code>
+                                    <pre>{{ theorem["statement"] }}</pre>
                                 </div>
                                 {%- endfor -%}
                             </div>

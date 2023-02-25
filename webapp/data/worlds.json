@@ -3,18 +3,31 @@
         {
             "world": 0,
             "name": "Tutorial world",
+            "file": "Tutorial.v",
             "levels": [
                 {
                     "name": "The `reflexivity` tactic",
-                    "lemma": "Lemma example1 (x : mynat) : x = x.",
+                    "lemma": "Example refl (x : mynat) : x = x.",
                     "tactics": "reflexivity",
                     "theorems": null
                 },
                 {
                     "name": "The `rewrite` tactic",
-                    "lemma": "Lemma test (x y z : mynat) (h : x = y + z) : x + z = y + z + z.",
+                    "lemma": "Example rewr (x y z : mynat) (h : x = y + z) : x + z = y + z + z.",
                     "tactics": "rewrite",
                     "theorems": null
+                },
+                {
+                    "name": "Peano's axioms",
+                    "lemma": "Example peano (a b : mynat) (h : S a = b) : S a = b.",
+                    "tactics": "rewrite",
+                    "theorems": null
+                },
+                {
+                    "name": "Addition",
+                    "lemma": "Lemma add_succ_zero (a : mynat) : a + S O = S a.",
+                    "tactics": "rewrite",
+                    "theorems": "add_succ"
                 }
             ]
         }

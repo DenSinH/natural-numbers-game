@@ -35,7 +35,6 @@ async def level(request: Request, world: int, level: int):
     tactics  = get_tactics(world, level)
     theorems = get_theorems(world, level)
 
-
     return {
         "host": request.host,
         "tactics": tactics,

@@ -1,2 +1,10 @@
 **/__pycache__/*
 **/.devcontainer/*
+*.aux
+*.glob
+*.vo
+*.vok
+*.vos
+Makefile
+Makefile.conf
+.vscode/
