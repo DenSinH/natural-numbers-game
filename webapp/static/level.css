@@ -114,17 +114,11 @@ pre.example {
     display: none;
 }
 
-.info-header {
-    margin: 5px 10px;
-    font-weight: bold;
-    font-size: 1.25em;
-    border-bottom: 1px solid black;
-}
-
-.info-body {
+#goals {
     padding-left: 10px;
 }
 
-.info-body pre {
+#goals pre {
     margin: 0;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
 }

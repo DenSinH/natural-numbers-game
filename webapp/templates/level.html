@@ -18,7 +18,7 @@
             const socketReconnectInterval = 2000; // ms
 
             function initSocket() {
-                socket = new WebSocket("{{ WEBSOCKET_SCHEME }}://{{ host }}{{ url_for('compile') }}");
+                socket = new WebSocket("{{ WEBSOCKET_SCHEME }}://{{ host }}{{ url_for('compile', _world=_world, _level=_level) }}");
 
                 socket.onclose = function(event) {
                     // attempt reconnect on close (also happens on error)
@@ -32,6 +32,7 @@
                 socket.addEventListener("message", (event) => {
                     let data = JSON.parse(event.data);
                     console.log(data);
+                    $("#goals").html(`<pre>${data.goal}</pre>`)
                 });
             }
 
@@ -138,6 +139,8 @@
             <div class="column main">
                 <h1>{{ world["name"]|format_code_in_text|safe }}</h1>
                 <h3>{{ level["name"]|format_code_in_text|safe }}</h3>
+
+                {{ level["prologue"]|format_paragraphs_in_text|format_code_in_text|safe }}
                 
                 <div class="lemma"><code>{{ level["lemma"] }}</code></div>
                 <code>Proof.</code>
@@ -145,25 +148,15 @@
                     <textarea id="editor"></textarea>
                 </div>    
                 <code>Qed.</code>
+
+                {{ level["epilogue"]|format_paragraphs_in_text|format_code_in_text|safe }}
             </div>
             <div class="column compilers">
                 <div class="compiler">
                     <div class="header">
                         <h3>Goals</h3>
                     </div>
-                    <div class="info">
-                        <div class="info-header">
-                            <code>line 30:12</code>
-                        </div>
-                        <div class="info-body">
-                            <!--this will never be rendered like this, so don't mind the indentation-->
-                            <pre>
-example-code.
-newline.
-another one.
-                            </pre>
-                        </div>
-                    </div>
+                    <div id="goals"></div>
                 </div>
 
                 <div class="messages">
