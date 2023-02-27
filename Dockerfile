@@ -9,7 +9,7 @@ COPY . .
 RUN apt-get update && apt-get install -y coq
 
 WORKDIR webapp/coq
-RUN make_vo.sh
+RUN ./make_vo.sh
 
 WORKDIR ../
 CMD ["python", "app.py"]

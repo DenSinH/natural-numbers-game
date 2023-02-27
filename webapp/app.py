@@ -126,13 +126,15 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
 
             # feed current proof output
             for line in code.split("\n"):
-                await coqtop.feed_line(line)
+                output = await coqtop.feed_line(line)
             
-            # get current goal
-            goal = await coqtop.feed_line("Show.")
-            cache[code] = goal
+            output = output.strip()
+            if not output:
+                # get current goal
+                output = await coqtop.feed_line("Show.")
+            cache[code] = output
 
-            await send(goal=goal)
+            await send(goal=output)
     except asyncio.CancelledError:
         # connection closed
         pass
