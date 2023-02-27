@@ -61,7 +61,7 @@ body {
 }
 
 #editor {
-    height: 20em;
+    height: 23px;
     width: 100%;
 }
 
@@ -118,7 +118,7 @@ pre.example {
     padding-left: 10px;
 }
 
-#goals pre {
+#goals pre, .theorem pre {
     margin: 0;
     white-space: pre-wrap;       /* Since CSS 2.1 */
 }

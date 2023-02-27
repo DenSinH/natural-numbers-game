@@ -3,9 +3,14 @@ Inductive mynat : Set :=
 | S : mynat -> mynat.
 
 Fixpoint add (n m : mynat) : mynat :=
-    match n with
-    | O => m
-    | S p => S (add p m)
+    match m with
+    | O => n
+    | S p => S (add n p)
     end.
 
 Infix "+" := add.
+Notation "(+)" := add (only parsing).
+Notation "( f +)" := (add f) (only parsing).
+Notation "(+ f )" := (fun g => add g f) (only parsing).
+
+Notation "0" := O.

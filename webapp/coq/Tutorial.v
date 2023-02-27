@@ -4,6 +4,7 @@ From NaturalNumbers Require Export Base.
 (* name The `reflexivity` tactic *)
 (* tactics reflexivity *)
 (* theorems null *)
+(* available false *)
 (* Level 0 prologue *)
 (* 
 This is some information about level 0. I want to write a lot of text 
@@ -102,6 +103,7 @@ egestas at, wisi. Phasellus massa.
 (* name The `rewrite` tactic *)
 (* tactics rewrite *)
 (* theorems null *)
+(* available false *)
 (* Level 1 prologue *)
 (* Level 1 lemma *)
 Example rewr (x y z : mynat) (h : x = y + z) : x + z = y + z + z.
@@ -118,6 +120,7 @@ Qed.
 (* name The `rewrite` tactic *)
 (* tactics rewrite *)
 (* theorems null *)
+(* available false *)
 (* Level 2 prologue *)
 (* Level 2 lemma *)
 Example peano (a b : mynat) (h : S a = b) : S a = b.
@@ -132,29 +135,21 @@ Qed.
 (* Given statements in Natural Numbers Game in Lean.
    They just write that Peano gave these.
    If we really wanted we could have just Admitted. them *)
-Fact add_zero (n : mynat) : n + O = n.
+Fact add_zero (n : mynat) : n + 0 = n.
 Proof.
-    induction n as [| ? H].
-    - trivial.
-    - simpl.
-        rewrite H.
-        reflexivity.
+    trivial.
 Qed.
 
 Fact add_succ (m n : mynat) : n + (S m) = S (n + m).
 Proof.
-    induction n as [| ? H].
-    - simpl.
-        reflexivity.
-    - simpl.
-        rewrite H.
-        reflexivity.
+    trivial.
 Qed.
 
 (* Level 3 data *)
 (* name The `rewrite` tactic *)
 (* tactics rewrite *)
-(* theorems null *)
+(* theorems add_succ *)
+(* available false *)
 (* Level 3 prologue *)
 (* Level 3 lemma *)
 Lemma add_succ_zero (a : mynat) : a + S O = S a.

@@ -24,7 +24,9 @@ def _validate_level(level, name):
     # and fix formatting.
     for section in ["prologue", "epilogue"]:
         level[section] = level.get(section, "").strip("(*) \n")
-
+    
+    # add available argument
+    level["available"] = level.get("available", True)
 
 def _parse_world_file(world, f):
     assert not world["levels"]
@@ -71,6 +73,10 @@ def _parse_world_file(world, f):
                 value = None
             elif _check_int(value):
                 value = int(value)
+            elif value == "false":
+                value = False
+            elif value == "true":
+                value = True
             level[key] = value
         elif state == "prologue" or state == "epilogue" or state == "proof":
             # multiline attributes
@@ -131,22 +137,52 @@ def get_tactics(world, level):
     return tactics
 
 
+def get_theorem_name(level):
+    return level["lemma"].split(" ")[1]
+
+
 def get_theorems(world, level):
     theorems = []
-    if level["theorems"] is not None:
-        for w in TACTICS["theorems"]:
-            # all previous worlds
-            if w["world"] < world["world"]:
-                theorems.append(w)
-            # only theorem up to the one marked in level
-            elif w["world"] == world["world"]:
-                _w = dict(w)
-                _w["theorems"] = []
-                for t in w["theorems"]:
-                    _w["theorems"].append(t)
+    for w in WORLDS:
+        world_theorems = {
+            "world": w["world"],
+            "theorems": []
+        }
+        if w["world"] < world["world"]:
+            # all theorems from previous worlds
+            for t in TACTICS["extra_theorems"][w["world"]]:
+                world_theorems["theorems"].append(t)
+            
+            # add all available level theorems
+            for l in w["levels"]:
+                if l["available"]:
+                    world_theorems["theorems"].append({
+                        "name": get_theorem_name(l),
+                        "statement": l["lemma"],
+                        "world": w["world"]
+                    })
+        elif w["world"] == world["world"]:
+            # add extra theorems up to marked one
+            if level["theorems"]:
+                for t in TACTICS["extra_theorems"][w["world"]]:
+                    world_theorems["theorems"].append(t)
                     if t["name"] == level["theorems"]:
                         break
-                theorems.append(_w)
+
+            # add previous available levels
+            for l in w["levels"]:
+                if l["level"] >= level["level"]:
+                    break
+                if l["available"]:
+                    world_theorems["theorems"].append({
+                        "name": get_theorem_name(l),
+                        "statement": l["lemma"],
+                        "world": w["world"]
+                    })
+        else:
+            continue
+        if world_theorems["theorems"]:
+            theorems.append(world_theorems)
     return theorems
 
 

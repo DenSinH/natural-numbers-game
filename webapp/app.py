@@ -2,12 +2,14 @@ from jinja2.filters import FILTERS
 from sanic import Sanic, Request, Websocket
 from sanic import response
 from sanic import exceptions
+import asyncio
+from websockets.exceptions import ConnectionClosed
 
 import json
 import re
 import os
 
-from coqtop import Coqtop
+from coqtop import *
 
 
 def format_code_in_text(text):
@@ -62,36 +64,6 @@ async def level(request: Request, _world: int, _level: int):
     }
 
 
-_EMPTY_LAST_TACTIC = re.compile(r"([^\.]+)\Z")
-_VERNACULAR_LIST = [
-    'Abort', 'About', 'Add', 'All', 'Arguments', 'Asymmetric', 'Axiom',
-    'Bind',
-    'Canonical', 'Check', 'Class', 'Close', 'Coercion', 'CoFixpoint', 'Comments',
-    'CoInductive', 'Context', 'Constructors', 'Contextual', 'Corollary',
-    'Defined', 'Definition', 'Delimit',
-    'Fail',
-    'Eval',
-    'End', 'Example', 'Export',
-    'Fact', 'Fixpoint', 'From',
-    'Global', 'Goal', 'Graph',
-    'Hint', 'Hypotheses', 'Hypothesis',
-    'Implicit', 'Implicits', 'Import', 'Inductive', 'Infix', 'Instance',
-    'Lemma', 'Let', 'Local', 'Ltac',
-    'Module', 'Morphism',
-    'Next', 'Notation',
-    'Obligation', 'Open',
-    'Parameter', 'Parameters', 'Prenex', 'Print', 'Printing', 'Program',
-    'Patterns', 'Projections', 'Proof',
-    'Proposition',
-    'Qed',
-    'Record', 'Relation', 'Remark', 'Require', 'Reserved', 'Resolve', 'Rewrite',
-    'Save', 'Scope', 'Search', 'SearchAbout', 'Section', 'Set', 'Show', 'Strict', 'Structure',
-    'Tactic', 'Time', 'Theorem', 'Types',
-    'Unset',
-    'Variable', 'Variables', 'View'
-]
-_VERNACULAR = re.compile(r"(\W|\A)(" + "|".join(_VERNACULAR_LIST) + r")(\W|\Z)")
-
 @app.websocket("/compile/<_world:int>/<_level:int>")
 async def compile(request: Request, ws: Websocket, _world: int, _level: int):
     try:
@@ -102,18 +74,18 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
     coqtop = await Coqtop.create()
 
     # feed (reduced) world source file up to level
-    goal = None
+    default_goal = None
     for line in world["reduced_file"]:
         if isinstance(line, int):
             if line == level["level"]:
                 break
         else:
-            goal = await coqtop.feed_line(line)
-    if goal is None:
+            default_goal = await coqtop.feed_line(line)
+    if default_goal is None:
         raise EOFError(f"No goal in level {_level} in world {_world}")
 
     # start proof
-    goal = await coqtop.feed_line("Proof.")
+    await coqtop.feed_line("Proof.")
 
     async def send(goal=None, messages=None, errors=None):
         await ws.send(json.dumps({
@@ -121,35 +93,52 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
             "messages": messages or [],
             "errors": errors or []
         }))
-    
-    prev_code = None
-    while True:
-        code = (await ws.recv()).strip()
 
-        # proof must end in .
-        code = re.sub(_EMPTY_LAST_TACTIC, "", code)
+    # send default goal to start proof
+    await send(goal=default_goal)
 
-        # don't allow any keywords
-        if re.search(_VERNACULAR, code):
-            await send(messages=["Do not send any vernacular in your code!"])
-            continue 
+    # keep track of previous code to reduce coqtop usage
+    cache = {}
+    try:
+        async for msg in ws:
+            try:
+                code = reduce_code(msg.strip())
+            except VernacularError:
+                await send(messages=["Do not send any vernacular in your code!"])
+                continue
 
-        # prevent unnecessary processing
-        if code == prev_code:
-            continue
-        prev_code = code
-        if not code:
-            continue
-      
-        # restart proof
-        await coqtop.feed_line("Restart.")
+            if len(code) > 500:
+                await send(messages=["Code too long, try to stay under 500 characters"])
+                continue
 
-        # feed current proof output
-        output = None
-        for line in code.split("\n"):
-            output = await coqtop.feed_line(line)
+            # prevent unnecessary processing
+            # check if result has been gotten before
+            if code in cache:
+                await send(goal=cache[code])
+                continue
+            if not code:
+                # empty editor, send default goal
+                await send(goal=default_goal)
+                continue
+        
+            # restart proof
+            await coqtop.feed_line("Restart.")
 
-        await send(goal=output)
+            # feed current proof output
+            for line in code.split("\n"):
+                await coqtop.feed_line(line)
+            
+            # get current goal
+            goal = await coqtop.feed_line("Show.")
+            cache[code] = goal
+
+            await send(goal=goal)
+    except asyncio.CancelledError:
+        # connection closed
+        pass
+    finally:
+        # close coqtop whenever something happens
+        await coqtop.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)

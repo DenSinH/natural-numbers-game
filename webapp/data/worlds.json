@@ -3,6 +3,10 @@
         {
             "name": "Tutorial world",
             "file": "Tutorial.v"
+        },
+        {
+            "name": "Addition world",
+            "file": "Addition.v"
         }
     ]
 }

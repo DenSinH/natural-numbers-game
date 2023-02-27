@@ -31,8 +31,9 @@
 
                 socket.addEventListener("message", (event) => {
                     let data = JSON.parse(event.data);
-                    console.log(data);
-                    $("#goals").html(`<pre>${data.goal}</pre>`)
+                    if (data.goal) {
+                        $("#goals").html(`<pre>${data.goal}</pre>`);
+                    }
                 });
             }
 
@@ -117,8 +118,8 @@
                     <div class="header">
                         <h3>Theorems</h3>
                     </div>
-                    {%- for world in theorems -%}
                     <div class="tactic-body hidden">
+                        {%- for world in theorems -%}
                         <div class="tactic">
                             <div class="header">
                                 <h3><code>{{ WORLDS[world["world"]]["name"] }}</code></h3>
@@ -131,8 +132,8 @@
                                 {%- endfor -%}
                             </div>
                         </div>
+                        {%- endfor -%}
                     </div>
-                    {%- endfor -%}
                 </div>
                 {%- endif -%}
             </div>
