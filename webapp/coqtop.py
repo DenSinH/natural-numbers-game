@@ -43,7 +43,7 @@ class Coqtop():
         out, err = await self._proc.communicate()
 
 
-_EMPTY_LAST_TACTIC = re.compile(r"([^\.]+)\Z")
+_EMPTY_LAST_TACTIC = re.compile(r"([\s\w]+)\Z")
 _VERNACULAR_LIST = [
     'Abort', 'About', 'Add', 'All', 'Arguments', 'Asymmetric', 'Axiom',
     'Bind',
@@ -78,7 +78,8 @@ class VernacularError(Exception):
 
 
 def reduce_code(code):
-    # proof must end in .
+    # proof must end in . or - or something
+    # remove any tactics that are not done writing
     code = re.sub(_EMPTY_LAST_TACTIC, "", code)
 
     # don't allow any keywords
