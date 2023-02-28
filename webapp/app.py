@@ -52,6 +52,10 @@ async def level(request: Request, _world: int, _level: int):
     tactics  = get_tactics(world, level)
     theorems = get_theorems(world, level)
 
+    convert_level_data = lambda x : x if x is None else dict(zip(("_world", "_level"), x))
+    next_level = convert_level_data(get_next_level(world, level))
+    prev_level = convert_level_data(get_prev_level(world, level))
+
     return {
         "host": request.host,
         "tactics": tactics,
@@ -60,6 +64,8 @@ async def level(request: Request, _world: int, _level: int):
         "_world": _world,
         "level": level,
         "_level": _level,
+        "next_level": next_level,
+        "prev_level": prev_level,
         "WORLDS": WORLDS
     }
 
@@ -91,7 +97,8 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
         await ws.send(json.dumps({
             "goal": goal or "",
             "messages": messages or [],
-            "errors": errors or []
+            "errors": errors or [],
+            "completed": goal.strip() == "No more subgoals."
         }))
 
     # send default goal to start proof
@@ -102,7 +109,8 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
     try:
         async for msg in ws:
             try:
-                code = reduce_code(msg.strip())
+                #  commas in input (rewrite add_zero, zero_add) give double output
+                code = reduce_code(msg.replace(",", ",\n").strip())
             except VernacularError:
                 await send(messages=["Do not send any vernacular in your code!"])
                 continue
@@ -122,14 +130,19 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
                 continue
         
             # restart proof
+            # first feed dot to "finish" any in progress commands
+            await coqtop.feed_line(".")
             await coqtop.feed_line("Restart.")
-
+            
             # feed current proof output
             for line in code.split("\n"):
                 output = await coqtop.feed_line(line)
             
             # get current goal
-            output = await coqtop.feed_line("Show.")
+            output = output.strip()
+            if not output:
+                output = await coqtop.feed_line("Show.")
+
             cache[code] = output
             await send(goal=output)
     except asyncio.CancelledError:

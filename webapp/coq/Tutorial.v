@@ -152,7 +152,7 @@ Qed.
 (* available false *)
 (* Level 3 prologue *)
 (* Level 3 lemma *)
-Lemma add_succ_zero (a : mynat) : a + S O = S a.
+Lemma add_succ_zero (a : mynat) : a + S 0 = S a.
 (* Level 3 proof *)
 Proof.
     rewrite add_succ.

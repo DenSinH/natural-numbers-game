@@ -27,6 +27,9 @@
 
                 socket.addEventListener("open", (event) => {
                     console.log("Connected!");
+                    if (editor.getValue()) {
+                        recompile();
+                    }
                 });
 
                 socket.addEventListener("message", (event) => {
@@ -34,59 +37,119 @@
                     if (data.goal) {
                         $("#goals").html(`<pre>${data.goal}</pre>`);
                     }
+                    if (data.completed && !completed) {
+                        completed = data.completed;
+                        storeState();
+                        makeCompleted();
+                    }
                 });
             }
 
-            initSocket("wss");
-
+            var completed = false;
             var typingTimer;
             const doneTypingInterval = 250; // ms
+            var editor;
+            
+            function getLocalStorageValue(key, def) {
+                let global_values = JSON.parse(localStorage.getItem(key) || "{}");
+                return global_values["{{ _world }}.{{ _level }}"] || def;
+            }
+
+            function setLocalStorageValue(key, val) {
+                let global_values = JSON.parse(localStorage.getItem(key) || "{}");
+                global_values["{{ _world }}.{{ _level }}"] = val;
+                localStorage.setItem(key, JSON.stringify(global_values));
+            }
+            
+            function loadState() {
+                completed       = getLocalStorageValue("completed", false);
+                if (completed) {
+                    makeCompleted();
+                }
+                let editor_text = getLocalStorageValue("editor_text", null);
+                if (editor_text !== null) {
+                    editor.setValue(editor_text);
+                    editor.setCursor({line: 999, ch: 999});
+                }
+            }
+
+            function storeState() {
+                setLocalStorageValue("completed", completed);
+                setLocalStorageValue("editor_text", editor.getValue());
+            }
+
+            function makeUnCompleted() {
+                $("#navigation-padding").css("background-color", "");
+            }
+
+            function makeCompleted() {
+                $("#navigation-padding").css("background-color", "darkseagreen");
+            }
+
+            function reset() {
+                editor.setValue("");
+                completed = false;
+                makeUnCompleted();
+                storeState();
+            }
+
+            function recompile() {
+                storeState();
+                clearTimeout(typingTimer);
+
+                // renew timer
+                typingTimer = setTimeout(() => {
+                    // get text up to cursor
+                    let text = "";
+                    let line = editor.doc.getCursor().line;
+                    let char = editor.doc.getCursor().ch;
+                    for (let i = 0; i < line; i++) {
+                        text += editor.doc.getLine(i) + "\n";
+                    }
+                    text += editor.doc.getLine(line).substr(0, char);
+                    socket.send(text);
+                }, doneTypingInterval);
+            };
 
             $(window).on("load", function() {
                 $(".tactic .header").on("click", function() {
                     $(this).parent().find(".tactic-body").first().toggleClass("hidden");
                 })
 
-                var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+                editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
                     mode: "text/x-coq",
                     indentUnit: 2,
                     lineNumbers: true,
                     viewportMargin: Infinity,
                 });
                 editor.setValue("");
+                initSocket();
+                loadState();
+
                 editor.on("keydown", function(e) { clearTimeout(typingTimer); });
-                function recompile(e) {
-                    clearTimeout(typingTimer);
-
-                    // renew timer
-                    typingTimer = setTimeout(() => {
-                        // get text up to cursor
-                        let text = "";
-                        let line = e.doc.getCursor().line;
-                        let char = e.doc.getCursor().ch;
-                        for (let i = 0; i < line; i++) {
-                            text += e.doc.getLine(i) + "\n";
-                        }
-                        text += e.doc.getLine(line).substr(0, char);
-                        socket.send(text);
-                    }, doneTypingInterval);
-                };
-
                 editor.on("keyup", recompile);
-                editor.on("click", recompile);
+                editor.on("mousedown", recompile);
             });
         </script>
     </head>
     <body>
         <div class="navigation">
             <div>
-                <div class="navbutton">Main Menu</div>
+                <div class="navbutton" onclick="location.href=`{{ url_for('index') }}`">Main Menu</div>
+                {% if prev_level %}
+                <div class="navbutton" onclick="location.href=`{{ url_for('level', **prev_level) }}`">Previous Level</div>
+                {% else %}
                 <div class="navbutton inactive">Previous Level</div>
+                {% endif %}
             </div>
-            <div><!-- Padding between buttons --></div>
+            <div id="navigation-padding"><!-- Padding between buttons --></div>
             <div>
-                <div class="navbutton">Reset</div>
-                <div class="navbutton">Next Level</div>
+                <div class="navbutton" onclick="reset()">Reset</div>
+                {% if next_level %}
+                <div class="navbutton" onclick="location.href=`{{ url_for('level', **next_level) }}`">Next Level</div>
+                {% else %}
+                <div class="navbutton inactive">Next Level</div>
+                {% endif %}
             </div>
         </div>
         <div class="column-container">

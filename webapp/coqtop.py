@@ -32,6 +32,8 @@ class Coqtop():
 
     async def feed_line(self, line: str) -> str:
         line = line.strip()
+        if not line:
+            return ""
         self._proc.stdin.write(f"{line}\n".encode())
         await self._proc.stdin.drain()
         return await self._wait_for_command_complete()
@@ -43,7 +45,7 @@ class Coqtop():
         out, err = await self._proc.communicate()
 
 
-_EMPTY_LAST_TACTIC = re.compile(r"([\s\w]+)\Z")
+_EMPTY_LAST_TACTIC = re.compile(r"([\s\w,\[\]\|\>?(){}]+)\Z")
 _VERNACULAR_LIST = [
     'Abort', 'About', 'Add', 'All', 'Arguments', 'Asymmetric', 'Axiom',
     'Bind',

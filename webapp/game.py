@@ -185,6 +185,27 @@ def get_theorems(world, level):
             theorems.append(world_theorems)
     return theorems
 
+def get_next_level(world, level):
+    last_level = level["level"] == len(world["levels"]) - 1
+    if last_level:
+        if world["world"] == len(WORLDS) - 1:
+            return None
+        else:
+            return (world["world"] + 1, 0)
+    else:
+        return (world["world"], level["level"] + 1)
+
+
+def get_prev_level(world, level):
+    first_level = level["level"] == 0
+    if first_level:
+        if world["world"] == 0:
+            return None
+        else:
+            return (world["world"] - 1, len(WORLDS[world["world"] - 1]["levels"]) - 1)
+    else:
+        return (world["world"], level["level"] - 1)
+
 
 if __name__ == '__main__':
     from pprint import pprint
