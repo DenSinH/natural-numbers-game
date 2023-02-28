@@ -60,7 +60,7 @@ Proof.
     trivial.
 Qed.
 
-(* Level 1 *)
+(* Level 0 *)
 Lemma zero_mul (m : mynat) : 0 * m = 0.
 Proof.
     induction m as [| ? H].
@@ -68,7 +68,7 @@ Proof.
     - rewrite mul_succ. easy.
 Qed.
 
-(* Level 2 *)
+(* Level 1 *)
 Lemma mul_one (m : mynat) : m * 1 = m.
 Proof.
     rewrite one_eq_succ_zero, mul_succ.
@@ -76,7 +76,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* Level 3 *)
+(* Level 2 *)
 Lemma one_mul (m : mynat) : 1 * m = m.
 Proof.
     induction m as [| ? H].
@@ -85,7 +85,7 @@ Proof.
       now rewrite H.
 Qed.
 
-(* Level 4 *)
+(* Level 3 *)
 Lemma mul_add (t a b : mynat) : t * (a + b) = t * a + t * b.
 Proof.
     induction b as [| ? H].
@@ -96,5 +96,67 @@ Proof.
       reflexivity.
 Qed.
 
+(* Level 4 *)
+Lemma mul_assoc (a b c : mynat) : (a * b) * c = a * (b * c).
+Proof.
+    induction c as [| ? H].
+    - repeat rewrite mul_zero; easy.
+    - repeat rewrite mul_succ.
+      rewrite H.
+      now rewrite mul_add.
+Qed.
 
 (* Level 5 *)
+Lemma succ_mul (a b : mynat) : (S a) * b = a * b + b.
+Proof.
+    induction b as [| ? H].
+    - repeat rewrite mul_zero; easy.
+    - repeat rewrite mul_succ.
+      rewrite H.
+      repeat rewrite add_succ.
+      f_equal.
+      (* todo: want to use simpl here *)
+      _simpl.
+      reflexivity.
+Qed.
+
+(* Level 6 *)
+Lemma add_mul (a b t : mynat) : (a + b) * t = a * t + b * t.
+Proof.
+    induction t as [| ? H].
+    - now repeat rewrite mul_zero.
+    - repeat rewrite mul_succ.
+      rewrite H.
+      (* todo: want to use simpl here *)
+      _simpl.
+      reflexivity.
+Qed.
+
+(* Level 7 *)
+Lemma mul_comm (a b : mynat) : a * b = b * a.
+Proof.
+    induction b as [| ? H].
+    - now rewrite mul_zero, zero_mul.
+    - rewrite mul_succ, succ_mul.
+      now rewrite H.
+Qed.
+
+(* Level 8 *)
+Lemma mul_left_assoc (a b c : mynat) : a * (b * c) = (a * b) * c.
+Proof.
+    rewrite <- mul_assoc.
+    reflexivity.
+Qed.
+
+Lemma add_left_assoc (a b c : mynat) : a + (b + c) = (a + b) + c.
+Proof.
+    rewrite <- add_assoc.
+    reflexivity.
+Qed.
+
+Definition mynat_semi_ring :=
+    mk_srt 0 1 add mul (@eq _) 
+    zero_add add_comm add_left_assoc one_mul zero_mul mul_comm 
+    mul_left_assoc add_mul.
+
+Add Ring mynat_ring : mynat_semi_ring.
