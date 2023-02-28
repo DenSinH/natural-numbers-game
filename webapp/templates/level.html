@@ -55,7 +55,7 @@
                 });
                 editor.setValue("");
                 editor.on("keydown", function(e) { clearTimeout(typingTimer); });
-                editor.on("keyup", function(e) {
+                function recompile(e) {
                     clearTimeout(typingTimer);
 
                     // renew timer
@@ -70,7 +70,10 @@
                         text += e.doc.getLine(line).substr(0, char);
                         socket.send(text);
                     }, doneTypingInterval);
-                });
+                };
+
+                editor.on("keyup", recompile);
+                editor.on("click", recompile);
             });
         </script>
     </head>

@@ -30,7 +30,7 @@ Module SemiRingFaking.
 
 End SemiRingFaking.
 
-Add Ring mynat_ring : SemiRingFaking.mynat_semi_ring.
+Add Ring _fake_mynat_ring : SemiRingFaking.mynat_semi_ring.
 Ltac _simpl := ring_simplify.
 
 Lemma test (a b c d e : mynat) : (((a+b)+c)+d)+e=(c+((b+e)+a))+d.
