@@ -12,4 +12,4 @@ WORKDIR webapp/coq
 RUN coq_makefile -f _CoqProject *.v -o Makefile && make clean && make
 
 WORKDIR ../
-CMD ["python", "app.py"]
+ENTRYPOINT ["python", "app.py"]
