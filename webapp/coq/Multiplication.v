@@ -31,12 +31,10 @@ Module SemiRingFaking.
 End SemiRingFaking.
 
 Add Ring _fake_mynat_ring : SemiRingFaking.mynat_semi_ring.
-Ltac _simpl := ring_simplify.
 
 Lemma test (a b c d e : mynat) : (((a+b)+c)+d)+e=(c+((b+e)+a))+d.
 Proof.
-    _simpl.
-    reflexivity.
+    ring.
 Qed.
 
 Fixpoint mul (n m : mynat) : mynat :=
@@ -92,8 +90,8 @@ Proof.
     - easy.
     - rewrite add_succ.
       repeat rewrite mul_succ.
-      rewrite H, add_assoc. (* Would want to do _simpl here... *)
-      reflexivity.
+      rewrite H.
+      ring.
 Qed.
 
 (* Level 4 *)
@@ -115,9 +113,7 @@ Proof.
       rewrite H.
       repeat rewrite add_succ.
       f_equal.
-      (* todo: want to use simpl here *)
-      _simpl.
-      reflexivity.
+      ring.
 Qed.
 
 (* Level 6 *)
@@ -127,9 +123,7 @@ Proof.
     - now repeat rewrite mul_zero.
     - repeat rewrite mul_succ.
       rewrite H.
-      (* todo: want to use simpl here *)
-      _simpl.
-      reflexivity.
+      ring.
 Qed.
 
 (* Level 7 *)
@@ -154,9 +148,17 @@ Proof.
     reflexivity.
 Qed.
 
-Definition mynat_semi_ring :=
-    mk_srt 0 1 add mul (@eq _) 
-    zero_add add_comm add_left_assoc one_mul zero_mul mul_comm 
-    mul_left_assoc add_mul.
+Definition mynat_semi_ring : semi_ring_theory 0 1 add mul (@eq _).
+Proof.
+    constructor.
+    - exact zero_add.
+    - exact add_comm.
+    - exact add_left_assoc.
+    - exact one_mul.
+    - exact zero_mul.
+    - exact mul_comm.
+    - exact mul_left_assoc.
+    - exact add_mul.
+Qed.
 
 Add Ring mynat_ring : mynat_semi_ring.
