@@ -140,7 +140,9 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
             
             # get current goal
             output = output.strip()
-            if not output:
+            
+            # if there was no error message
+            if not output.startswith("Toplevel input"):
                 output = await coqtop.feed_line("Show.")
 
             cache[code] = output
