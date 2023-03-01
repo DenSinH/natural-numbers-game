@@ -13,7 +13,9 @@ from coqtop import *
 
 
 def format_code_in_text(text):
-    return re.sub(r"`(.*?)`", r"<code>\1</code>", text)
+    # todo: whitespace is trimmed
+    multiple_ticks = re.sub(r"```((.|\n)*?)```", r"<pre>\1</pre>", text)
+    return re.sub(r"`(.*?)`", r"<code>\1</code>", multiple_ticks)
 
 
 def format_paragraphs_in_text(text):
@@ -33,7 +35,9 @@ from game import *
 @app.get("/")
 @app.ext.template("index.html")
 async def index(req):
-    return {}
+    return {
+        "WORLDS": WORLDS
+    }
 
 
 @app.get("/level")
@@ -100,7 +104,6 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
             "errors": errors or [],
             "completed": goal.strip() == "No more subgoals."
         }))
-
     # send default goal to start proof
     await send(goal=default_goal)
 
@@ -155,4 +158,6 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
         await coqtop.close()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 80)))
+    import sys
+
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 80)), debug="--debug" in sys.argv)

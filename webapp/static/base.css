@@ -1,0 +1,14 @@
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.subtitle {
+    color: gray;
+}
+
+a {
+    text-decoration: none;
+    color: steelblue;
+}

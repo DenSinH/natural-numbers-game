@@ -2,11 +2,63 @@
     "worlds": [
         {
             "name": "Tutorial world",
-            "file": "Tutorial.v"
+            "file": "Tutorial.v",
+            "depends": [],
+            "x": 0
         },
         {
             "name": "Addition world",
-            "file": "Addition.v"
+            "file": "Addition.v",
+            "depends": [0],
+            "x": 0
+        },
+        {
+            "name": "Multiplication world",
+            "file": "Multiplication.v",
+            "depends": [1],
+            "x": 0
+        },
+        {
+            "name": "Power world",
+            "file": "Power.v",
+            "depends": [2],
+            "x": -100
+        },
+        {
+            "name": "Function world",
+            "file": "Function.v",
+            "depends": [2],
+            "x": 100
+        },
+        {
+            "name": "Proposition world",
+            "file": "Proposition.v",
+            "depends": [4],
+            "x": 100
+        },
+        {
+            "name": "Advanced Proposition world",
+            "file": "AdvProposition.v",
+            "depends": [5],
+            "x": 100
+        },
+        {
+            "name": "Advanced Addition world",
+            "file": "AdvAddition.v",
+            "depends": [6],
+            "x": 100
+        },
+        {
+            "name": "Advanced Multiplication world",
+            "file": "AdvMultiplication.v",
+            "depends": [7, 2],
+            "x": 0
+        },
+        {
+            "name": "Inequality world",
+            "file": "Inequality.v",
+            "depends": [8],
+            "x": 0
         }
     ]
 }

@@ -23,21 +23,37 @@ Proof.
     trivial.
 Qed.
 
-(* Level 0 *)
+(* Level 0 data *)
+(* name `zero_pow_zero` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 0 prologue *)
 Lemma zero_pow_zero : 0 ^ 0 = 1.
 Proof.
     (* unfold pow *)
     reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 1 *)
+(* Level 1 data *)
+(* name `zero_pow_succ` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 1 prologue *)
 Lemma zero_pow_succ (m : mynat) : 0 ^ S m = 0.
 Proof.
     (* probably best to do this with induction over m for practice though *)
     reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 2 *)
+(* Level 2 data *)
+(* name `pow_one` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 2 prologue *)
 Lemma pow_one (a : mynat) : a ^ 1 = a.
 Proof.
     rewrite one_eq_succ_zero.
@@ -45,8 +61,14 @@ Proof.
     rewrite pow_zero.
     ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 3 *)
+(* Level 3 data *)
+(* name `one_pow` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 3 prologue *)
 Lemma one_pow (m : mynat) : 1 ^ m = 1.
 Proof.
     induction m as [| ? H].
@@ -55,8 +77,14 @@ Proof.
       rewrite H.
       reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 4 *)
+(* Level 4 data *)
+(* name `pow_add` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 4 prologue *)
 Lemma pow_add (a m n : mynat) : a ^ (m + n) = a ^ m * a ^ n.
 Proof.
     induction n as [| ? H].
@@ -68,8 +96,14 @@ Proof.
       rewrite H.
       ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 5 *)
+(* Level 5 data *)
+(* name `mul_pow` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 5 prologue *)
 Lemma mul_pow (a b n : mynat) : (a * b) ^ n = a ^ n * b ^ n.
 Proof.
     induction n as [| ? H].
@@ -78,8 +112,14 @@ Proof.
       rewrite H.
       ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 6 *)
+(* Level 6 data *)
+(* name `pow_pow` *)
+(* tactics induction *)
+(* theorems pow_succ *)
+(* Level 6 prologue *)
 Lemma pow_pow (a m n : mynat) : (a ^ m) ^ n = a ^ (m * n).
 Proof.
     induction n as [| ? H].
@@ -88,6 +128,8 @@ Proof.
       rewrite H.
       reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 Definition II := S I.
 Notation "2" := II.
@@ -96,7 +138,11 @@ Proof.
   trivial.
 Qed.
 
-(* Level 7 *)
+(* Level 7 data *)
+(* name `add_squared` *)
+(* tactics induction *)
+(* theorems two_eq_succ_one *)
+(* Level 7 prologue *)
 Lemma add_squared (a b : mynat) : (a + b) ^ 2 = a^2 + b^2 + 2 * a * b.
 Proof.
     (* rewrite two_eq_succ_one *)
@@ -110,4 +156,5 @@ Proof.
     (* ring_simplify.  output is ugly *)
     ring.
 Qed.
-
+(* Level epilogue *)
+(* Level end *)

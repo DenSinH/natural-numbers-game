@@ -6,7 +6,7 @@ with open("data/tactics.json", "r") as f:
 with open("data/worlds.json", "r") as f:
     WORLDS = json.load(f)["worlds"]
 
-_LEVEL_DATA_SEPARATION_MARKER = re.compile(r"\(\*\s*Level\s+(\d+)\s+(.*?)\s*\*\)")
+_LEVEL_DATA_SEPARATION_MARKER = re.compile(r"\(\*\s*Level\s+(\d+\s+)?(.*?)\s*\*\)")
 _LEVEL_DATA = re.compile(r"\(\*\s*(\w+)\s+(.*?)\s*\*\)")
 
 
@@ -27,6 +27,7 @@ def _validate_level(level, name):
     
     # add available argument
     level["available"] = level.get("available", True)
+    level["theorems"]  = level.get("theorems", None)
 
 def _parse_world_file(world, f):
     assert not world["levels"]
@@ -40,13 +41,26 @@ def _parse_world_file(world, f):
     while line := f.readline():
         line = line.strip()
 
+        if state is not None:
+            if line == "Proof.":
+                # level marker
+                reduced_world_file.append(current)
+                reduced_world_file.append(line)
+                state = "proof"
+                continue
+            elif any(line.startswith(thm) for thm in ["Example", "Lemma", "Fact", "Theorem"]):
+                state = "lemma"
+                level["lemma"] = line
+                reduced_world_file.append(line)
+                continue
+
         # check if we are going to read a new section
         match = re.match(_LEVEL_DATA_SEPARATION_MARKER, line)
         if match is not None:
             level_no, section = match.groups()
-            level_no = int(level_no)
+            level_no = int(level_no or current)
             if level_no != current:
-                raise ValueError(f"Unexpected level number, expected {current}, got {level_no}")
+                raise ValueError(f"Unexpected level number, expected {current}, got {level_no} in world {world['world']}")
 
             if section == "end":
                 level["level"] = current
@@ -78,26 +92,19 @@ def _parse_world_file(world, f):
             elif value == "true":
                 value = True
             level[key] = value
-        elif state == "prologue" or state == "epilogue" or state == "proof":
+        elif state == "prologue" or state == "epilogue":
             # multiline attributes
             if state not in level:
-                if state == "proof":
-                    # proof start for level, insert level marker
-                    reduced_world_file.append(current)
                 level[state] = ""
             level[state] += f"{line}\n"
-
-            if state == "proof":
-                reduced_world_file.append(line)
 
         elif state == "lemma":
             # level main lemma, there must be precisely one of these
             if line:
-                if "lemma" in level:
-                    raise ValueError(f"Double lemma for level {current} in world {world['world']}:"
-                                     f"Have: {level['lemma']}\nGot: {level['lemma']}")
-                level["lemma"] = line
+                level["lemma"] += f"\n{line}"
                 reduced_world_file.append(line)
+        elif state == "proof":
+            reduced_world_file.append(line)
         elif state is None:
             reduced_world_file.append(line)
         else:

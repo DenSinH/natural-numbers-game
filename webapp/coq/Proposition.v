@@ -1,17 +1,31 @@
-(* Level 0 *)
+
+(* Level 0 data *)
+(* name the `exact` tactic *)
+(* tactics induction *)
+(* Level prologue *)
 Example level0 (P Q : Prop) (p : P) (h : P -> Q) : Q.
 Proof.
     exact (h p).
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 1 *)
+(* Level 1 data *)
+(* name the `intro` tactic *)
+(* tactics induction *)
+(* Level 1 prologue *)
 Lemma imp_self (P : Prop) : P -> P.
 Proof.
     intro p.
     exact p.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 2 *)
+(* Level 2 data *)
+(* name the `remember` and `specialize` tactics *)
+(* tactics induction *)
+(* Level 2 prologue *)
 Lemma maze (P Q R S T U: Prop)
     (p : P)
     (h : P -> Q)
@@ -27,8 +41,13 @@ Proof.
     eremember (l(t)) as u.
     exact u.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 3 *)
+(* Level 3 data *)
+(* name the `apply` tactic *)
+(* tactics induction *)
+(* Level 3 prologue *)
 Lemma maze2 (P Q R S T U: Prop)
     (p : P)
     (h : P -> Q)
@@ -42,15 +61,25 @@ Proof.
     apply j, h.
     exact p.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 4 *)
+(* Level 4 data *)
+(* name `P -> (Q -> P)` *)
+(* tactics induction *)
+(* Level 4 prologue *)
 Example level4 (P Q : Prop) : P -> (Q -> P).
 Proof.
     intros p q.
     exact p.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 5 *)
+(* Level 5 data *)
+(* name `(P -> (Q -> R)) -> ((P -> Q) -> (P -> R))` *)
+(* tactics induction *)
+(* Level 5 prologue *)
 Example level5 (P Q R : Prop) : (P -> (Q -> R)) -> ((P -> Q) -> (P -> R)).
 Proof.
     intros j f p.
@@ -58,14 +87,21 @@ Proof.
     - exact p.
     - exact (f p).
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 6 *)
+(* Level 6 data *)
+(* name `(P -> Q) -> ((Q -> F) -> (P -> F))` *)
+(* tactics induction *)
+(* Level 6 prologue *)
 Lemma imp_trans (P Q R : Type) : (P -> Q) -> ((Q -> R) -> (P -> R)).
 Proof.
     intros f g h.
     apply g, f.
     exact h.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 Lemma not_iff_impl_false (P : Prop) : ~ P <-> (P -> False).
 Proof.
@@ -77,7 +113,10 @@ Qed.
 
 Require Setoid.
 
-(* Level 7 *)
+(* Level 7 data *)
+(* name `(P -> Q) -> (~Q -> ~P)` *)
+(* tactics induction *)
+(* Level 7 prologue *)
 Lemma contrapositive (P Q : Prop) : (P -> Q) -> (~Q -> ~P).
 Proof.
     (* requires Setoid *)
@@ -85,8 +124,13 @@ Proof.
     intros f g p.
     exact (g (f p)).
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 8 *)
+(* Level 8 data *)
+(* name a big maze *)
+(* tactics induction *)
+(* Level 8 prologue *)
 Example level8 (A B C D E F G H I J K L : Prop)
 (f1 : A -> B) (f2 : B -> E) (f3 : E -> D) (f4 : D -> A) (f5 : E -> F)
 (f6 : F -> C) (f7 : B -> C) (f8 : F -> G) (f9 : G -> J) (f10 : I -> J)
@@ -96,5 +140,7 @@ Proof.
     intro a.
     now apply f15, f11, f9, f8, f5, f2, f1.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 

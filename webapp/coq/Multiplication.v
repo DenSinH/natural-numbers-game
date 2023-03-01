@@ -58,23 +58,40 @@ Proof.
     trivial.
 Qed.
 
-(* Level 0 *)
+(* Level 0 data *)
+(* name `zero_mul` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 0 prologue *)
 Lemma zero_mul (m : mynat) : 0 * m = 0.
 Proof.
     induction m as [| ? H].
     - rewrite mul_zero; easy.
     - rewrite mul_succ. easy.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
-(* Level 1 *)
+(* Level 1 data *)
+(* name `mul_one` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 1 prologue *)
 Lemma mul_one (m : mynat) : m * 1 = m.
 Proof.
     rewrite one_eq_succ_zero, mul_succ.
     rewrite mul_zero, zero_add.
     reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 2 *)
+(* Level 2 data *)
+(* name `one_mul` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 2 prologue *)
 Lemma one_mul (m : mynat) : 1 * m = m.
 Proof.
     induction m as [| ? H].
@@ -82,8 +99,15 @@ Proof.
     - rewrite mul_succ.
       now rewrite H.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 3 *)
+(* Level 3 data *)
+(* name `mul_add` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 3 prologue *)
 Lemma mul_add (t a b : mynat) : t * (a + b) = t * a + t * b.
 Proof.
     induction b as [| ? H].
@@ -93,8 +117,15 @@ Proof.
       rewrite H.
       ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 4 *)
+(* Level 4 data *)
+(* name `mul_assoc` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 4 prologue *)
 Lemma mul_assoc (a b c : mynat) : (a * b) * c = a * (b * c).
 Proof.
     induction c as [| ? H].
@@ -103,8 +134,15 @@ Proof.
       rewrite H.
       now rewrite mul_add.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 5 *)
+(* Level 5 data *)
+(* name `succ_mul` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 5 prologue *)
 Lemma succ_mul (a b : mynat) : (S a) * b = a * b + b.
 Proof.
     induction b as [| ? H].
@@ -115,8 +153,15 @@ Proof.
       f_equal.
       ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 6 *)
+(* Level 6 data *)
+(* name `add_mul` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 6 prologue *)
 Lemma add_mul (a b t : mynat) : (a + b) * t = a * t + b * t.
 Proof.
     induction t as [| ? H].
@@ -125,8 +170,15 @@ Proof.
       rewrite H.
       ring.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 7 *)
+(* Level 7 data *)
+(* name `mul_comm` (boss level!) *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 7 prologue *)
 Lemma mul_comm (a b : mynat) : a * b = b * a.
 Proof.
     induction b as [| ? H].
@@ -134,13 +186,22 @@ Proof.
     - rewrite mul_succ, succ_mul.
       now rewrite H.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 (* Level 8 *)
+(* Level 8 data *)
+(* name `mul_left_assoc` *)
+(* tactics induction *)
+(* theorems mul_succ *)
+(* Level 8 prologue *)
 Lemma mul_left_assoc (a b c : mynat) : a * (b * c) = (a * b) * c.
 Proof.
     rewrite <- mul_assoc.
     reflexivity.
 Qed.
+(* Level epilogue *)
+(* Level end *)
 
 Lemma add_left_assoc (a b c : mynat) : a + (b + c) = (a + b) + c.
 Proof.

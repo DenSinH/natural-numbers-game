@@ -51,13 +51,11 @@ Ut auctor. Suspendisse nibh. Curabitur et lorem. Praesent pede.
 Ut euismod nunc id mi. In ante nulla, egestas quis, pharetra et, 
 egestas at, wisi. Phasellus massa.
 *)
-(* Level 0 lemma *)
 Example refl (x : mynat) : x = x.
-(* Level 0 proof *)
 Proof.
     reflexivity.
 Qed.
-(* Level 0 epilogue *)
+(* Level epilogue *)
 (*
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
 Nunc vitae pede in erat dignissim accumsan. Etiam dolor.
@@ -105,9 +103,7 @@ egestas at, wisi. Phasellus massa.
 (* theorems null *)
 (* available false *)
 (* Level 1 prologue *)
-(* Level 1 lemma *)
 Example rewr (x y z : mynat) (h : x = y + z) : x + z = y + z + z.
-(* Level 1 proof *)
 Proof.
     rewrite h.
     reflexivity.
@@ -122,9 +118,7 @@ Qed.
 (* theorems null *)
 (* available false *)
 (* Level 2 prologue *)
-(* Level 2 lemma *)
 Example peano (a b : mynat) (h : S a = b) : S a = b.
-(* Level 2 proof *)
 Proof.
     rewrite <- h.
     reflexivity.
@@ -151,9 +145,7 @@ Qed.
 (* theorems add_succ *)
 (* available false *)
 (* Level 3 prologue *)
-(* Level 3 lemma *)
 Lemma add_succ_zero (a : mynat) : a + S 0 = S a.
-(* Level 3 proof *)
 Proof.
     rewrite add_succ.
     rewrite add_zero.

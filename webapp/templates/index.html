@@ -1,9 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Document</title>
+        <title>The Natural Numbers Game</title>
+        <link rel="stylesheet" type="text/css" href="/static/base.css">
+        <link rel="stylesheet" type="text/css" href="/static/index.css">
+        <script src="/static/packages/visjs/vis-network.min.js"></script>
     </head>
     <body>
-        <h1>Successfully deployed app</h1>
+        <div id="welcome-text" class="column">
+            <h1>The Natural Numbers Game: Coq Edition!</h1>
+            <h3>By Dennis Hilhorst</h3>
+            <h5 class="subtitle">Inspired by <a href="https://www.ma.imperial.ac.uk/~buzzard/xena/natural_number_game/">The Natural Number Game</a></h5>
+            <h3>What is this game?</h3>
+            <p>
+                Welcome to the Natural Numbers Game: Coq edition. For me, this game
+                was mostly a fun way of learning Coq (and a bit of Lean at the same
+                time from looking at the original version). I figured I'd make this
+                so that maybe some day someone else finds it a useful tool for learning
+                Coq in a fun and interactive way, or even finds something useful in 
+                the source code / my solutions.
+            </p>
+            <p>
+                In this game, like the original, you get your own version of the natural
+                numbers, called <code>mynat</code>. Starting from scratch, you prove all
+                sorts of lemmas to show structures on this type. For example, starting off
+                you cannot even assume that <code>x + y = y + x</code>!
+            </p>
+            <p>
+                While doing this, you will learn many different tactics to make your life easier.
+                In the first world, the tutorial world, you will learn the most basic tactics, 
+                and as you go through the worlds you will learn more advanced ones.
+                There is a compiler window on the right hand side, communicating your code with a server.
+                A theorem is proven when it says <code>No more subgoals.</code>
+                You can keep hitting next level and you will automatically go through to the next world
+                when you finish a world. If you wish to enter a different world, simply go back to the
+                main menu (here), and select a different world. You can do the worlds in any order you
+                like, but it is useful to stick to the suggested order, as you might need to use
+                lemmas from previous worlds. Even if you do not do the earlier worlds, these lemmas
+                are still available.
+            </p>
+        </div>
+        <div id="network"></div><script type="text/javascript">
+            // create an array with nodes
+            var nodes = new vis.DataSet([
+                {%- for world in WORLDS -%}
+                    { 
+                        id: {{ world["world"] }},
+                        label: "{{ world["name"] }}",
+                        {%- if world["x"] -%}
+                        x: {{ world["x"] }},
+                        {%- endif -%}
+                    },
+                {%- endfor -%}
+            ]);
+
+            // create an array with edges
+            var edges = new vis.DataSet([
+                {%- for world in WORLDS -%}
+                    {%- for dep in world["depends"] -%}
+                        { from: {{ dep }}, to: {{ world["world"] }} },
+                    {%- endfor -%}
+                {%- endfor -%}
+            ]);
+
+            // create a network
+            var container = document.getElementById("network");
+            var data = {
+                nodes: nodes,
+                edges: edges,
+            };
+            var options = {
+                physics: false,
+                nodes: {
+                    shape: "dot",
+                    font: {
+                        size: 15,
+                        color: "black",
+                        strokeWidth: 5,
+                        strokeColor: "white",
+                    },
+                    color: {
+                        border: "darkgray",
+                        background: "gray",
+                        hover: {
+                            border: "gray",
+                            background: "lightgray",
+                        },
+                        highlight: {
+                            border: "gray",
+                            background: "lightgray",
+                        }
+                    }
+                },
+                edges: {
+                    arrows: {
+                        middle: {
+                            enabled: true,
+                            type: "arrow"
+                        }
+                    },
+                    smooth: {
+                        enabled: false
+                    },
+                    width: 3
+                },
+                layout: {
+                    hierarchical: {
+                        direction: "UD"
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    dragView: false,
+                    zoomView: false
+                }
+            };
+            var network = new vis.Network(container, data, options);
+            nodes.update([
+            {%- for world in WORLDS -%}
+                {%- if world["x"] is not none -%}
+                { 
+                    id: {{ world["world"] }},
+                    x: {{ world["x"] }},
+                },
+                {%- endif -%}
+            {%- endfor -%}
+            ]);
+            
+            network.on("click", function(params) {
+                let node = this.getNodeAt(params.pointer.DOM);
+                if (node !== undefined) {
+                    location.href = `/level/${node}/0`;
+                }
+            });
+        </script>
     </body>
 </html>

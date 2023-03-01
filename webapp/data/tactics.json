@@ -38,6 +38,50 @@
                 "name": "one_eq_succ_zero",
                 "statement": "Fact one_eq_succ_zero : 1 = S 0."
             }
+        ],
+        [
+            {
+                "name": "mul_zero",
+                "statement": "Fact mul_zero (a : mynat) : a * 0 = 0."
+            },
+            {
+                "name": "mul_succ",
+                "statement": "Fact mul_succ (a b : mynat) : a * S b = a * b + a."
+            }
+        ],
+        [
+            {
+                "name": "pow_zero",
+                "statement": "Fact pow_zero (a : mynat) : a ^ 0 = 1."
+            },
+            {
+                "name": "pow_succ",
+                "statement": "Fact pow_succ (a b : mynat) : a ^ S b = a ^ b * a."
+            },
+            {
+                "name": "two_eq_succ_one",
+                "statement": "Fact two_eq_succ_one : 2 = S 1."
+            }
+        ],
+        [],
+        [],
+        [],
+        [
+            {
+                "name": "succ_inj",
+                "statement": "Fact succ_inj {a b : mynat} : S a = S b -> a = b."
+            },
+            {
+                "name": "zero_ne_succ",
+                "statement": "Fact zero_ne_succ (a : mynat) : 0 <> S a."
+            }
+        ],
+        [],
+        [
+            {
+                "name": "le_iff_exists_add",
+                "statement": "Fact le_iff_exists_add (a b : mynat) : a <= b <-> exists (c : mynat), b = a + c."
+            }
         ]
     ]
 }
