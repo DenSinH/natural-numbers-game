@@ -1,4 +1,4 @@
-From NaturalNumbers Require Import Base Tutorial Addition Multiplication Power.
+From NaturalNumbers Require Export Base Tutorial Addition Multiplication Power.
 
 (* Level 0 data *)
 (* name the `exact` tactic *)

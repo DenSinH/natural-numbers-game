@@ -1,4 +1,4 @@
-From NaturalNumbers Require Import Base Tutorial Addition.
+From NaturalNumbers Require Export Base Tutorial Addition.
 
 Fixpoint mul (n m : mynat) : mynat :=
     match m with

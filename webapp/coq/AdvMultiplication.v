@@ -1,4 +1,4 @@
-From NaturalNumbers Require Import Base Tutorial Addition Multiplication Power AdvAddition.
+From NaturalNumbers Require Export Base Tutorial Addition Multiplication Power AdvAddition.
 
 (* Level 0 data *)
 (* name `mul_pos` *)

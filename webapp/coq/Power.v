@@ -1,4 +1,4 @@
-From NaturalNumbers Require Import Base Tutorial Addition Multiplication.
+From NaturalNumbers Require Export Base Tutorial Addition Multiplication.
 
 Fixpoint pow (a p : mynat) : mynat :=
     match p with

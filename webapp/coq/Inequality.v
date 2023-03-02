@@ -1,4 +1,4 @@
-From NaturalNumbers Require Import Base Tutorial Addition 
+From NaturalNumbers Require Export Base Tutorial Addition 
     Multiplication Power AdvAddition AdvMultiplication.
 
 Definition le (a b : mynat) := exists (c : mynat), b = a + c.

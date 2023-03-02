@@ -38,8 +38,8 @@ def _parse_world_file(world, f):
     current = 0
     state = None
     level = {}
-    while line := f.readline():
-        line = line.strip()
+    while unstripped := f.readline():
+        line = unstripped.strip()
 
         if state is not None:
             if line == "Proof.":
@@ -96,12 +96,14 @@ def _parse_world_file(world, f):
             # multiline attributes
             if state not in level:
                 level[state] = ""
-            level[state] += f"{line}\n"
+            level[state] += unstripped
 
         elif state == "lemma":
             # level main lemma, there must be precisely one of these
             if line:
-                level["lemma"] += f"\n{line}"
+                # only strip newlines 
+                newline_stripped = unstripped.strip('\n')
+                level["lemma"] += f"\n{newline_stripped}"
                 reduced_world_file.append(line)
         elif state == "proof":
             reduced_world_file.append(line)
