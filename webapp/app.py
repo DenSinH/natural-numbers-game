@@ -74,6 +74,8 @@ async def level(request: Request, _world: int, _level: int):
     }
 
 
+_NON_ASCII_FILTER = re.compile(r"[^ -~\n]")
+
 @app.websocket("/compile/<_world:int>/<_level:int>")
 async def compile(request: Request, ws: Websocket, _world: int, _level: int):
     try:
@@ -112,8 +114,10 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
     try:
         async for msg in ws:
             try:
-                #  commas in input (rewrite add_zero, zero_add) give double output
-                code = reduce_code(msg.replace(",", ",\n").strip())
+                # commas in input (rewrite add_zero, zero_add) give double output
+                # filter out any non-ascii characters to prevent people messing
+                # with coqtop
+                code = reduce_code(re.sub(_NON_ASCII_FILTER, "", msg)).replace(",", ",\n").strip())
             except VernacularError:
                 await send(messages=["Do not send any vernacular in your code!"])
                 continue
