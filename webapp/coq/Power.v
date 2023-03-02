@@ -28,6 +28,21 @@ Qed.
 (* tactics induction *)
 (* theorems pow_succ *)
 (* Level 0 prologue *)
+(*
+Power world it is! Let's define our power operator on `mynat` real quick, 
+and give you the following theorems to work with:
+<ul>
+    <li>`Fact pow_zero (a : mynat) : a ^ 0 = 1.`</li>
+    <li>`Fact pow_succ (a b : mynat) : a ^ S b = a ^ b * a.`</li>
+</ul>
+We will not be needing any additional tactics in this world, 
+`rewrite`, `reflexivity` and `induction` should be enough, though
+the `ring` tactic might come in handy!
+
+I will leave you at it for this world, with all the theorems you
+have so far you should be able to handle yourself without any
+hints or tips from me!
+*)
 Lemma zero_pow_zero : 0 ^ 0 = 1.
 Proof.
     (* unfold pow *)
@@ -116,10 +131,26 @@ Qed.
 (* Level end *)
 
 (* Level 6 data *)
-(* name `pow_pow` *)
+(* name `pow_pow` (boss level!) *)
 (* tactics induction *)
 (* theorems pow_succ *)
 (* Level 6 prologue *)
+(*
+Boss level! Alright, maybe a quick tip about the `rewrite` tactic.
+Did you know that instead of repeatedly writing `rewrite` with different
+theorems or hypotheses like so:
+```
+rewrite succ_add.
+rewrite mul_succ.
+rewrite mul_add.
+...
+```
+you can instead do
+```
+rewrite succ_add, mul_succ, mul_add.
+```
+Try it out!
+*)
 Lemma pow_pow (a m n : mynat) : (a ^ m) ^ n = a ^ (m * n).
 Proof.
     induction n as [| ? H].
@@ -143,6 +174,14 @@ Qed.
 (* tactics induction *)
 (* theorems two_eq_succ_one *)
 (* Level 7 prologue *)
+(*
+I have just added the definition for 2 (yeah, we didn't
+have that yet...) and a theorem 
+```
+#Fact two_eq_succ_one : 2 = S 1.
+```
+Use it to prove the last theorem of Power World!
+*)
 Lemma add_squared (a b : mynat) : (a + b) ^ 2 = a^2 + b^2 + 2 * a * b.
 Proof.
     (* rewrite two_eq_succ_one *)

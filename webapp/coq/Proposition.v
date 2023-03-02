@@ -4,6 +4,21 @@
 (* tactics induction *)
 (* available false *)
 (* Level prologue *)
+(*
+Classically, you can think of a proposition to be a statement
+that is True or False. In Homotopy Type Theory, this definition
+is a bit more subtle, but instead of `Type`s we may use
+`Prop`s. You can think of types `P : Prop` as propositions, and
+elements `p : P` as proofs for the proposition `P`. In this case,
+functions `P -> Q` become like implications, where we wish to produce
+a proof of the proposition `Q` from a proof `p : P` of 
+the proposition `P`. 
+
+Remember our `exact` tactic. It works the same here as in the previous
+world, so the proof of this lemma may seem familiar. If you forgot how
+you proved this statement for `Type`s in Function World, feel free
+to go back and look at your proof there!
+*)
 Example level0 (P Q : Prop) (p : P) (h : P -> Q) : Q.
 Proof.
     exact (h p).
@@ -16,6 +31,17 @@ Qed.
 (* tactics induction *)
 (* available false *)
 (* Level 1 prologue *)
+(*
+Let's prove an implication. Like I said in the previous level,
+they are kind of like functions, except on `Prop`ositions instead of
+`Type`s. In the below lemma,
+typing `intro p` will kind of be like saying "assume `P` holds".
+It then remains to present some element of type `P`. But we have a proof
+of `P`, namely `p`, which we introduced before. It should be enough to then
+type `exact p`.
+
+Try it out below!
+*)
 Lemma imp_self (P : Prop) : P -> P.
 Proof.
     intro p.
@@ -25,10 +51,23 @@ Qed.
 (* Level end *)
 
 (* Level 2 data *)
-(* name the `remember` and `specialize` tactics *)
+(* name the `specialize` tactic *)
 (* tactics induction *)
 (* available false *)
 (* Level 2 prologue *)
+(*
+Like in function world, we can still use the `specialize` tactic
+to make it easier to later `exact _` something of the right type.
+Indeed, here we could type 
+```
+exact (l(j(h(p))))
+```
+but you should try to use the `specialize` tactic to practice!
+Remember, it should look something like
+```
+specialize (h p) as q.
+```
+*)
 Lemma maze (P Q R S T U: Prop)
     (p : P)
     (h : P -> Q)
@@ -52,6 +91,13 @@ Qed.
 (* tactics induction *)
 (* available false *)
 (* Level 3 prologue *)
+(*
+Our hypotheses kind of became a mess on the previous level, so 
+we should try it again, but then using `apply`. Again, like in 
+Function world, this allows us to "reason backwards". Try
+to `apply` the right functions to turn our goal into `P`,
+so we can `exact p.` to finish it off.
+*)
 Lemma maze2 (P Q R S T U: Prop)
     (p : P)
     (h : P -> Q)

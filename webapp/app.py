@@ -13,7 +13,6 @@ from coqtop import *
 
 
 def format_code_in_text(text):
-    # todo: whitespace is trimmed
     multiple_ticks = re.sub(r"```((.|\n)*?)```", r"<pre class=\"coq-code\">\1</pre>", text)
     return re.sub(r"`(.*?)`", r"<code>\1</code>", multiple_ticks)
 
@@ -117,7 +116,7 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
                 # commas in input (rewrite add_zero, zero_add) give double output
                 # filter out any non-ascii characters to prevent people messing
                 # with coqtop
-                code = reduce_code(re.sub(_NON_ASCII_FILTER, "", msg)).replace(",", ",\n").strip())
+                code = reduce_code(re.sub(_NON_ASCII_FILTER, "", msg).replace(",", ",\n").strip())
             except VernacularError:
                 await send(messages=["Do not send any vernacular in your code!"])
                 continue

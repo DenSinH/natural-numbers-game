@@ -96,7 +96,9 @@ def _parse_world_file(world, f):
             # multiline attributes
             if state not in level:
                 level[state] = ""
-            level[state] += unstripped
+            # we use hashtags to prevent Lemma's etc. in comments
+            # to mess up our parsing
+            level[state] += unstripped.strip("#")
 
         elif state == "lemma":
             # level main lemma, there must be precisely one of these
