@@ -2,6 +2,7 @@
 (* Level 0 data *)
 (* name the `exact` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level prologue *)
 Example level0 (P Q : Prop) (p : P) (h : P -> Q) : Q.
 Proof.
@@ -13,6 +14,7 @@ Qed.
 (* Level 1 data *)
 (* name the `intro` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level 1 prologue *)
 Lemma imp_self (P : Prop) : P -> P.
 Proof.
@@ -25,6 +27,7 @@ Qed.
 (* Level 2 data *)
 (* name the `remember` and `specialize` tactics *)
 (* tactics induction *)
+(* available false *)
 (* Level 2 prologue *)
 Lemma maze (P Q R S T U: Prop)
     (p : P)
@@ -47,6 +50,7 @@ Qed.
 (* Level 3 data *)
 (* name the `apply` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level 3 prologue *)
 Lemma maze2 (P Q R S T U: Prop)
     (p : P)
@@ -67,6 +71,7 @@ Qed.
 (* Level 4 data *)
 (* name `P -> (Q -> P)` *)
 (* tactics induction *)
+(* available false *)
 (* Level 4 prologue *)
 Example level4 (P Q : Prop) : P -> (Q -> P).
 Proof.
@@ -79,6 +84,7 @@ Qed.
 (* Level 5 data *)
 (* name `(P -> (Q -> R)) -> ((P -> Q) -> (P -> R))` *)
 (* tactics induction *)
+(* available false *)
 (* Level 5 prologue *)
 Example level5 (P Q R : Prop) : (P -> (Q -> R)) -> ((P -> Q) -> (P -> R)).
 Proof.
@@ -93,6 +99,7 @@ Qed.
 (* Level 6 data *)
 (* name `(P -> Q) -> ((Q -> F) -> (P -> F))` *)
 (* tactics induction *)
+(* available false *)
 (* Level 6 prologue *)
 Lemma imp_trans (P Q R : Type) : (P -> Q) -> ((Q -> R) -> (P -> R)).
 Proof.
@@ -116,6 +123,7 @@ Require Setoid.
 (* Level 7 data *)
 (* name `(P -> Q) -> (~Q -> ~P)` *)
 (* tactics induction *)
+(* available false *)
 (* Level 7 prologue *)
 Lemma contrapositive (P Q : Prop) : (P -> Q) -> (~Q -> ~P).
 Proof.
@@ -130,6 +138,7 @@ Qed.
 (* Level 8 data *)
 (* name a big maze *)
 (* tactics induction *)
+(* available false *)
 (* Level 8 prologue *)
 Example level8 (A B C D E F G H I J K L : Prop)
 (f1 : A -> B) (f2 : B -> E) (f3 : E -> D) (f4 : D -> A) (f5 : E -> F)

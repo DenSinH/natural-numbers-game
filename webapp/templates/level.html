@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ world["name"] }}: {{ level["name"] }}</title>
+        <title>{{ world["name"] }}: {{ level["name"]|replace("`", '"') }}</title>
         <link rel="stylesheet" type="text/css" href="/static/level.css">
         <link rel="stylesheet" type="text/css" href="/static/base.css">
         <script src="/static/packages/jquery/jquery-3.6.3.min.js"></script>
@@ -10,7 +10,7 @@
         <script src="/static/packages/codemirror/coq.js"></script>
         <link rel="stylesheet" type="text/css" href="/static/packages/codemirror/codemirror-6.65.7.min.css">
         <style>
-            .CodeMirror {
+            .CodeMirror:not(.CodeMirror-readonly) {
                 height: auto;
                 border: 1px solid black;
             }
@@ -117,20 +117,6 @@
                 $(".tactic .header").on("click", function() {
                     $(this).parent().find(".tactic-body").first().toggleClass("hidden");
                 })
-
-                editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-                    mode: "text/x-coq",
-                    indentUnit: 2,
-                    lineNumbers: true,
-                    viewportMargin: Infinity,
-                });
-                editor.setValue("");
-                initSocket();
-                loadState();
-
-                editor.on("keydown", function(e) { clearTimeout(typingTimer); });
-                editor.on("keyup", recompile);
-                editor.on("mousedown", recompile);
             });
         </script>
     </head>
@@ -195,7 +181,7 @@
                             <div class="tactic-body hidden">
                                 {%- for theorem in world["theorems"] -%}
                                 <div class="theorem">
-                                    <pre>{{ theorem["statement"] }}</pre>
+                                    <pre class="coq-code">{{ theorem["statement"] }}</pre>
                                 </div>
                                 {%- endfor -%}
                             </div>
@@ -211,7 +197,7 @@
 
                 {{ level["prologue"]|format_paragraphs_in_text|format_code_in_text|safe }}
                 
-                <div class="lemma"><pre>{{ level["lemma"] }}</pre></div>
+                <div class="lemma"><pre class="coq-code">{{ level["lemma"] }}</pre></div>
                 <code>Proof.</code>
                 <div class="editor">
                     <textarea id="editor"></textarea>
@@ -237,4 +223,26 @@
             </div>
         </div>
     </body>
+
+    <footer>
+        <script>
+            // all the CodeMirror stuff after the html since we need the elements
+            // to all be present
+            editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+                mode: "text/x-coq",
+                indentUnit: 2,
+                lineNumbers: true,
+                viewportMargin: Infinity,
+            });
+            editor.setValue("");
+
+            // we need the editor to be loaded before we initalize the socket
+            initSocket();
+            loadState();
+
+            editor.on("keydown", function(e) { clearTimeout(typingTimer); });
+            editor.on("keyup", recompile);
+            editor.on("mousedown", recompile);
+        </script>
+    </footer>
 </html>

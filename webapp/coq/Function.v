@@ -3,6 +3,7 @@ From NaturalNumbers Require Export Base Tutorial Addition Multiplication Power.
 (* Level 0 data *)
 (* name the `exact` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level 0 prologue *)
 Example level0 (P Q : Type) (p : P) (h : P -> Q) : Q.
 Proof.
@@ -17,6 +18,7 @@ Notation "3" := III.
 (* Level 1 data *)
 (* name the `intro` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level 1 prologue *)
 Example level1 : mynat -> mynat.
 Proof.
@@ -29,6 +31,7 @@ Qed.
 (* Level 2 data *)
 (* name the `remember` and `specialize` tactics *)
 (* tactics induction *)
+(* available false *)
 (* Level 2 prologue *)
 Example level2 (P Q R S T U : Type)
     (p : P)
@@ -51,6 +54,7 @@ Qed.
 (* Level 3 data *)
 (* name the `apply` tactic *)
 (* tactics induction *)
+(* available false *)
 (* Level 3 prologue *)
 Example level3 (P Q R S T U : Type)
     (p : P)
@@ -71,6 +75,7 @@ Qed.
 (* Level 4 data *)
 (* name `P -> (Q -> P)` *)
 (* tactics induction *)
+(* available false *)
 (* Level 4 prologue *)
 Example level4 (P Q : Type) : P -> (Q -> P).
 Proof.
@@ -83,6 +88,7 @@ Qed.
 (* Level 5 data *)
 (* name `(P -> (Q -> R)) -> ((P -> Q) -> (P -> R))` *)
 (* tactics induction *)
+(* available false *)
 (* Level 5 prologue *)
 Example level5 (P Q R : Type) : (P -> (Q -> R)) -> ((P -> Q) -> (P -> R)).
 Proof.
@@ -97,6 +103,7 @@ Qed.
 (* Level 6 data *)
 (* name `(P -> Q) -> ((Q -> F) -> (P -> F))` *)
 (* tactics induction *)
+(* available false *)
 (* Level 6 prologue *)
 Example level6 (P Q F : Type) : (P -> Q) -> ((Q -> F) -> (P -> F)).
 Proof.
@@ -115,6 +122,7 @@ Definition empty := Empty_set.
 (* Level 7 data *)
 (* name `(P -> Q) -> ((Q -> empty) -> (P -> empty))` *)
 (* tactics induction *)
+(* available false *)
 (* Level 7 prologue *)
 Example level7 (P Q : Type) : (P -> Q) -> ((Q -> empty) -> (P -> empty)).
 Proof.
@@ -128,6 +136,7 @@ Qed.
 (* Level 8 data *)
 (* name a big maze *)
 (* tactics induction *)
+(* available false *)
 (* Level 8 prologue *)
 Example level8 (A B C D E F G H I J K L : Type)
     (f1 : A -> B) (f2 : B -> E) (f3 : E -> D) (f4 : D -> A) (f5 : E -> F)

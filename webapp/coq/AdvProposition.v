@@ -78,6 +78,7 @@ Qed.
 (* Level 5 data *)
 (* name Or, and the `left` and `right` tactics *)
 (* tactics induction *)
+(* available false *)
 (* Level prologue *)
 Example prop_or (P Q : Prop) : Q -> (P \/ Q).
 Proof.
@@ -143,6 +144,7 @@ split.
 (* Level 8 data *)
 (* name `exfalso` and proof by contradiction *)
 (* tactics induction *)
+(* available false *)
 (* Level prologue *)
 Lemma contra (P Q : Prop) : (P /\ ~P) -> Q.
 Proof.
@@ -157,6 +159,7 @@ Require Import Classical.
 (* Level 9 data *)
 (* name the law of the excluded middle *)
 (* tactics induction *)
+(* available false *)
 (* Level prologue *)
 Lemma contrapositive (P Q : Prop) : (~Q -> ~P) -> (P -> Q).
 Proof.

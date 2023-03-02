@@ -1,4 +1,4 @@
-From NaturalNumbers Require Export Base Tutorial Addition Multiplication.
+From NaturalNumbers Require Export Base Tutorial Addition Multiplication AdvProposition.
 
 Require Coq.Classes.RelationClasses.
 

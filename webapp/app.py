@@ -14,7 +14,7 @@ from coqtop import *
 
 def format_code_in_text(text):
     # todo: whitespace is trimmed
-    multiple_ticks = re.sub(r"```((.|\n)*?)```", r"<pre>\1</pre>", text)
+    multiple_ticks = re.sub(r"```((.|\n)*?)```", r"<pre class=\"coq-code\">\1</pre>", text)
     return re.sub(r"`(.*?)`", r"<code>\1</code>", multiple_ticks)
 
 

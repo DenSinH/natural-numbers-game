@@ -1,5 +1,5 @@
 From NaturalNumbers Require Export Base Tutorial Addition 
-    Multiplication Power AdvAddition AdvMultiplication.
+    Multiplication Power Proposition AdvProposition AdvAddition AdvMultiplication.
 
 Definition le (a b : mynat) := exists (c : mynat), b = a + c.
 
