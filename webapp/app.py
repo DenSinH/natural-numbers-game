@@ -134,7 +134,8 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
         
             # restart proof
             # first feed dot to "finish" any in progress commands
-            await coqtop.feed_line(".")
+            # also feed comment end marker to cut off any comments
+            await coqtop.feed_line("*).")
             await coqtop.feed_line("Restart.")
             
             # feed current proof output
