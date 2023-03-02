@@ -42,15 +42,20 @@
             </p>
         </div>
         <div id="network"></div><script type="text/javascript">
+            const _completed = JSON.parse(
+                localStorage.getItem("completed") || "{}"
+            );
             // create an array with nodes
             var nodes = new vis.DataSet([
                 {%- for world in WORLDS -%}
                     { 
                         id: {{ world["world"] }},
                         label: "{{ world["name"] }}",
-                        {%- if world["x"] -%}
-                        x: {{ world["x"] }},
-                        {%- endif -%}
+                        group: [
+                            {%- for level in world["levels"] -%}
+                                _completed["{{ world['world'] }}.{{ level['level'] }}"],
+                            {%- endfor -%}
+                        ].every((e) => e) ? "completed" : undefined
                     },
                 {%- endfor -%}
             ]);
@@ -93,6 +98,22 @@
                         }
                     }
                 },
+                groups: {
+                    completed: {
+                        color: {
+                            background: "darkseagreen",
+                            border: "darkolivegreen"
+                        },
+                        hover: {
+                            border: "seagreen",
+                            background: "darkseagreen",
+                        },
+                        highlight: {
+                            border: "seagreen",
+                            background: "darkseagreen",
+                        }
+                    }
+                },
                 edges: {
                     arrows: {
                         middle: {
@@ -116,6 +137,7 @@
                     zoomView: false
                 }
             };
+
             var network = new vis.Network(container, data, options);
             nodes.update([
             {%- for world in WORLDS -%}
