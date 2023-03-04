@@ -25,23 +25,44 @@ class Coqtop():
             cwd="./coq"
         )
 
+    async def _flush_stdout(self):
+        # kind of hacky
+        await self._proc.stdout.read(len(self._proc.stdout._buffer))
+
     async def _wait_for_command_complete(self):
         out = (await self._proc.stdout.readuntil(b"< ")).decode()
+        # wait until last line does not start with a space
+        while True:
+            if "\n" not in out:
+                break
+            last_line = out.rsplit("\n", 1)[1]
+            if not last_line:
+                # this should not happen, but just in case
+                break
+            if not last_line[0].isspace():
+                # not of the form goal <
+                break
+
+            out += (await self._proc.stdout.readuntil(b"< ")).decode()
+
         # remove last line (state <)
-        return "\n".join(out.split("\n")[:-1])
+        return out.rsplit("\n", 1)[0]
+
+    async def _write_stdin(self, bytes):
+        await self._flush_stdout()
+        self._proc.stdin.write(bytes)
+        await self._proc.stdin.drain()
 
     async def feed_line(self, line: str) -> str:
         line = line.strip()
         if not line:
             return ""
-        self._proc.stdin.write(f"{line}\n".encode())
-        await self._proc.stdin.drain()
+        await self._write_stdin(f"{line}\n".encode())
         return await self._wait_for_command_complete()
 
     async def close(self):
         # ctrl-Z exit command
-        self._proc.stdin.write(b"\x1a\n")
-        await self._proc.stdin.drain()
+        await self._write_stdin(b"\x1a\n")
         out, err = await self._proc.communicate()
 
 

@@ -13,20 +13,39 @@ from coqtop import *
 from game import *
 
 
-def format_code_in_text(text):
-    multiple_ticks = re.sub(r"```((.|\n)*?)```", r"<pre class=\"coq-code\">\1</pre>", text)
-    return re.sub(r"`(.*?)`", r"<code>\1</code>", multiple_ticks)
 
+def _format_paragraphs(text):
+    return re.sub(r"\s*\n\s*\n\s*", "</br></br>", text.strip("\n"))
 
-def format_paragraphs_in_text(text):
-    return "<p>" + re.sub(r"\s*\n\s*\n\s*", "</p><p>", text) + "</p>"
+def _format_inline_code(text):
+    return re.sub(r"`(.*?)`", r'<pre class="inline-code"><code class="language-coq">\1</code></pre>', text)
+
+def format_text(text):
+    sections  = text.split("```")
+    formatted = []
+    for i, section in enumerate(sections):
+        code = (i % 2) == 1
+        if code:
+            if section.startswith("plaintext"):
+                plaintext = section.split("plaintext", 1)[1].strip("\n")
+                formatted.append(f'<pre><code class="language-plaintext">{plaintext}</code></pre>')
+            else:
+                stripped = section.strip("\n")
+                formatted.append(f'<pre><code class="language-coq">{stripped}</code></pre>')
+        else:
+            formatted.append(_format_paragraphs(_format_inline_code(section)))
+    return "\n".join(formatted)
+
+def split_theorem_line(text):
+    return ":\n    ".join(text.rsplit(":", 1))
+
 
 SECURE = "SECURE" not in os.environ or int(os.environ["SECURE"])
 
 app = Sanic(__name__)
 app.static("/static", "./static")
-app.ext.environment.filters["format_code_in_text"]       = format_code_in_text
-app.ext.environment.filters["format_paragraphs_in_text"] = format_paragraphs_in_text
+app.ext.environment.filters["format_text"] = format_text
+app.ext.environment.filters["split_theorem_line"] = split_theorem_line
 app.ext.environment.globals["WEBSOCKET_SCHEME"] = "wss" if SECURE else "ws"
 
 
@@ -148,7 +167,7 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
             output = output.strip()
             
             # if there was no error message
-            if not output.startswith("Toplevel input"):
+            if "Toplevel input" not in output:
                 output = await coqtop.feed_line("Show.")
 
             cache[code] = output

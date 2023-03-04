@@ -112,7 +112,27 @@ pre.example {
     padding-left: 10px;
 }
 
-#goals pre, .theorem pre {
+#level {
+    margin: 20px 0;
+}
+
+#lemma pre, #proof pre, #qed pre, #goals pre, .theorem pre, pre.inline-code {
     margin: 0;
     white-space: pre-wrap;       /* Since CSS 2.1 */
+}
+
+#lemma pre code, #proof pre code, #qed pre code, pre.inline-code code {
+    padding: 0 !important;
+    white-space: pre-wrap !important;
+    background-color: white !important;
+}
+
+pre.inline-code code {
+    display: inline !important;
+    width: fit-content !important;
+}
+
+pre.inline-code  {
+    display: inline !important;
+    padding: 0 !important;
 }

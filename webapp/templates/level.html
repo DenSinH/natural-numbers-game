@@ -4,10 +4,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ world["name"] }}: {{ level["name"]|replace("`", '"') }}</title>
         <link rel="stylesheet" type="text/css" href="/static/level.css">
+        <style>
+            /* custom overrides for highlighting */
+            .hljs-tactic, .cm-tactic, .cm-terminator {
+                color: #397300 !important;
+            }
+
+            .hljs-builtin, .cm-builtin {
+                font-weight: 700 !important;
+                color: #30a !important;
+            }
+
+            .cm-number {
+                color: #800 !important;
+            }
+
+            .hljs-keyword {
+                font-weight: normal !important;
+                color: #708;
+            }
+        </style>
         <link rel="stylesheet" type="text/css" href="/static/base.css">
         <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
         <script src="/static/packages/codemirror/coq.js"></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+        <script src="/static/packages/highlight/highlight.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
         <style>
             .CodeMirror:not(.CodeMirror-readonly) {
@@ -118,6 +140,33 @@
                     $(this).parent().find(".tactic-body").first().toggleClass("hidden");
                 })
             });
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('pre code.language-coq').forEach((el) => {
+                    hljs.highlightElement(el, {language: "coq"});
+                });
+                document.querySelectorAll('pre code.language-plaintext').forEach((el) => {
+                    hljs.highlightElement(el, {language: "plaintext"});
+                });
+            });
+
+            document.onkeydown = function(e) {
+                e = e || window.event;
+                if (e.ctrlKey && e.shiftKey) {
+                    {% if next_level %}
+                    if (e.keyCode == 39) {
+                        // right key
+                        location.href=`{{ url_for('level', **next_level) }}`
+                    }
+                    {% endif %}
+                    {% if prev_level %}
+                    if (e.keyCode == 37) {
+                        // left key
+                        location.href=`{{ url_for('level', **prev_level) }}`
+                    }
+                    {% endif %}
+                }
+            }
         </script>
     </head>
     <body>
@@ -155,10 +204,10 @@
                             </div>
                             <div class="tactic-body hidden">
                                 <h5>Description</h5>
-                                {{ tactic["description"]|join("\n")|format_code_in_text|format_paragraphs_in_text|safe }}
+                                {{ tactic["description"]|join("\n")|format_text|safe }}
                                 {%- if tactic["example"] -%}
                                 <h5>Example</h5>
-                                <pre class="example">{{ tactic["example"]|join("\n") }}</pre>
+                                <pre class="example"><code class="language-coq">{{ tactic["example"]|join("\n") }}</code></pre>
                                 {%- endif -%}
                             </div>
                         </div>
@@ -181,7 +230,7 @@
                             <div class="tactic-body hidden">
                                 {%- for theorem in world["theorems"] -%}
                                 <div class="theorem">
-                                    <pre class="coq-code">{{ theorem["statement"] }}</pre>
+                                    <pre><code class="language-coq">{{ theorem["statement"]|split_theorem_line }}</code></pre>
                                 </div>
                                 {%- endfor -%}
                             </div>
@@ -192,19 +241,21 @@
                 {%- endif -%}
             </div>
             <div class="column main">
-                <h1>{{ world["name"]|format_code_in_text|safe }}</h1>
-                <h3>Level {{ level["level"] }}: {{ level["name"]|format_code_in_text|safe }}</h3>
+                <h1>{{ world["name"]|format_text|safe }}</h1>
+                <h3>Level {{ level["level"] }}: {{ level["name"]|format_text|safe }}</h3>
 
-                {{ level["prologue"]|format_paragraphs_in_text|format_code_in_text|safe }}
-                
-                <div class="lemma"><pre class="coq-code">{{ level["lemma"] }}</pre></div>
-                <code>Proof.</code>
-                <div class="editor">
-                    <textarea id="editor"></textarea>
-                </div>    
-                <code>Qed.</code>
+                {{ level["prologue"]|format_text|safe }}
 
-                {{ level["epilogue"]|format_paragraphs_in_text|format_code_in_text|safe }}
+                <div id="level">
+                    <div id="lemma"><pre><code class="language-coq">{{ level["lemma"] }}</code></pre></div>
+                    <div id="proof"><pre><code class="language-coq">Proof.</code></pre></div>
+                    <div class="editor">
+                        <textarea id="editor"></textarea>
+                    </div>    
+                    <div id="qed"><pre><code class="language-coq">Qed.</code></pre></div>
+                </div>
+
+                {{ level["epilogue"]|format_text|safe }}
             </div>
             <div class="column compilers">
                 <div class="compiler">

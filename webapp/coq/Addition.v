@@ -52,7 +52,7 @@ two "subgoals", one for the base case (`n = 0`), and one for the
 induction step. It is common practice to "select" the subgoal explicitly
 by typing a dash `-` on the next line. Doing this you will only see one goal again.
 Once you are done proving this goal, the interpreter will tell you
-```
+```plaintext
 This subproof is complete, but there are some unfocused goals.
 Focus next goal with bullet -.
 

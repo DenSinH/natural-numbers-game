@@ -25,7 +25,7 @@ So far, we have only seen goals in the form of equations,
 but a goal can also be a type, where we wish to find an 
 instance of a certain type. You may have already seen that the
 goal for this level looks like
-```
+```plaintext
   P : Type
   Q : Type
   p : P
@@ -97,7 +97,7 @@ Qed.
 (* Level 2 prologue *)
 (*
 We might have a whole lot of functions, like in the diagram below:
-```
+```plaintext
         h       i
 p : P ----> Q ----> R
             |
@@ -151,7 +151,7 @@ Qed.
 (* Level 3 prologue *)
 (*
 Let's try this again, but in a different way. We have the same diagram
-```
+```plaintext
         h       i
 p : P ----> Q ----> R
             |

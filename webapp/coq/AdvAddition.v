@@ -116,7 +116,7 @@ rewrite theorems/hypothesis in <i>other hypotheses</i>!
 
 If we `intro h.` in this level we get `h : a + t = b + t`.
 Doing induction on `t` gives us hypotheses and a subgoal
-```
+```plaintext
 a, b : mynat
 h : a + 0 = b + 0
 ============================

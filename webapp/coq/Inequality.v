@@ -70,7 +70,6 @@ Now we have shown that `<=` is a reflexive equation.
 I can now power up our `reflexivity` tactic, by typing
 ```
 Require Import Coq.Classes.RelationClasses.
-
 Global Instance le_Reflexive : Reflexive le := le_refl.
 ```
 which allows us to prove statements like the following a lot

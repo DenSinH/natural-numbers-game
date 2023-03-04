@@ -148,10 +148,14 @@ Qed.
 Just writing `0`, `S 0`, `S (S 0)` etc. becomes a bit boring, so let's 
 introduce addition! Peano defined this by "recursion". He described how
 to add 0 to a number, the base case:
-```Fact add_zero (n : mynat) : n + 0 = n.```
+```
+#Fact add_zero (n : mynat) : n + 0 = n.
+```
 and then what happens if you add the successor of any number to another number
 (the inductive step):
-```Fact add_succ (m n : mynat) : n + (S m) = S (n + m).```
+```
+#Fact add_succ (m n : mynat) : n + (S m) = S (n + m).
+```
 Coq defined recursion on our inductive type `mynat` for us, so it was possible
 to define it in this way. The `Fact` keyword does not mean much by the way,
 it is effectively just an alias for `Lemma`, and these two "facts" are effectively

@@ -82,14 +82,14 @@ Instead, we have to use the `revert` tactic. This tactic is kind
 of the opposite of the `intro` tactic. It removes one of our hypotheses,
 and turns the rest of the hypotheses and the goal into `forall` statments. 
 I.e., if we have 
-```
+```plaintext
 a, b, c : mynat
 ha : a <> 0
 ============================
 a * b = a * c -> b = c
 ```
 and we type `revert b.`, we get
-```
+```plaintext
 a, c : mynat
 ha : a <> 0
 ============================
