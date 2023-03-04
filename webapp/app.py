@@ -162,6 +162,10 @@ async def compile(request: Request, ws: Websocket, _world: int, _level: int):
             # feed current proof output
             for line in code.split("\n"):
                 output = await coqtop.feed_line(line)
+
+                # break if an error happens in a line
+                if "Toplevel input" in output:
+                    break
             
             # get current goal
             output = output.strip()
