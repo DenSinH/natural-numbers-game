@@ -2,16 +2,265 @@
     "tactics": [
         {
             "name": "reflexivity",
-            "description": "Solves the goal if it is a trivial equality.",
-            "example": "Theorem ft : 41 + 1 = 42.\nProof.\n  reflexivity."
+            "description": [
+                "Solves the goal if it is a trivial equality."
+            ],
+            "example": [
+                "Theorem ft : 41 + 1 = 42.",
+                "Proof.",
+                "  reflexivity.",
+                "Qed."
+            ]
         },
         {
             "name": "rewrite",
-            "description": "Given some known equality `a = b`, the rewrite tactic lets you replace `a` with `b` or vice versa in a goal or hypothesis"
+            "description": [
+                "Given some known equality `a = b`,",
+                "the rewrite tactic lets you replace `a` with `b`",
+                "or vice versa in a goal or hypothesis",
+                "",
+                "You can also use it to rewrite in a hypothesis.",
+                "Suppose you have a hypothesis `h : a + 0 = b`,",
+                "using `rewrite add_zero in h` rewrites `h` into",
+                "`h : a = b`.",
+                "",
+                "It is also possible to rewrite multiple hypotheses and",
+                "theorems in a row, by writing them as a comma separated",
+                "sequence, like `rewrite h, add_succ, add_zero.",
+                "",
+                "It is also possible to rewrite equivalences `<->`."
+            ],
+            "example": [
+                "Theorem rw (a b : mynat) (h : a + 0 = b) : a = b",
+                "Proof.",
+                "  rewrite add_zero in h.",
+                "  rewrite h.",
+                "  reflexivity.",
+                "Qed."
+            ]
         },
         {
             "name": "induction",
-            "description": "Perform induction over some `n : mynat` in our assumptions."
+            "description": [
+                "Perform induction over some `n : mynat` in our assumptions."
+            ]
+        },
+        {
+            "name": "repeat",
+            "description": [
+                "Repeat the tactic written after the `repeat` tactic until it fails.",
+                "This tactic can never fail, even if the tactic after it",
+                "can not be executed at all."
+            ]
+        },
+        {
+            "name": "ring",
+            "description": [
+                "Solve basic ring equations. If you have not finished",
+                "Multiplication world, it will only work for addition."
+            ],
+            "example": [
+                "Theorem add_comm' (a b : mynat) : a + b = b + a.",
+                "Proof.",
+                "  ring.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "exact",
+            "description": [
+                "Finish a proof by presenting an expression of the goal type."
+            ],
+            "example": [
+                "Example exct (P Q : Type) (p : P) (h : P -> Q) : Q.",
+                "Proof.",
+                "    exact (h p).",
+                "Qed."
+            ]
+        },
+        {
+            "name": "intro",
+            "description": [
+                "Introduce a hypothesis (with optionally a provided name).",
+                "Works for implications and `forall` statements."
+            ],
+            "example": [
+                "Example intr (P : Type) : P -> P.",
+                "Proof.",
+                "    intro p.",
+                "    exact p.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "specialize",
+            "description": [
+                "Save an expression as a hypothesis to use later."
+            ],
+            "example": [
+                "Example spclz (P Q : Type) (h : P -> Q) : P -> Q.",
+                "Proof.",
+                "    intro p.",
+                "    specialize (h p) as q",
+                "    exact q.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "apply",
+            "description": [
+                "Apply a function / implication on the current goal to allow",
+                "us to \"reason backwards\". `apply f.` with `f : A -> B` turns",
+                "a goal of the form `B` into one of the form `A`."
+            ],
+            "example": [
+                "Example appl (P Q : Type) (h : P -> Q) : P -> Q.",
+                "Proof.",
+                "    intro p.",
+                "    apply h",
+                "    exact p.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "unfold",
+            "description": [
+                "Unfolds the definition of an operator or infix.",
+                "We will mostly need this for `unfold not`, turning",
+                "`~P` into `P -> False` for some `P : Type`.",
+                "",
+                "Can also be used to unfold definitions in our",
+                "hypotheses. For example if we have `h : ~P`, typing",
+                "`unfold not in h` turns it into `h : P -> False`.",
+                "",
+                "`unfold not` also transforms inequalities `a <> b` into",
+                "implications `a = b -> False`."
+            ]
+        },
+        {
+            "name": "split",
+            "description": [
+                "Turns a goal of the form `<->` or `/\\` into two",
+                "subgoals."
+            ],
+            "example": [
+                "Example prop_and (P Q : Prop) (p : P) (q : Q) : P /\\ Q.",
+                "Proof.",
+                "    split.",
+                "    - exact p.",
+                "    - exact q.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "destruct",
+            "description": [
+                "Destructs a hypothesis of the form `<->` or `/\\` into",
+                "two separate hypotheses, witnessing either side.",
+                "",
+                "Also performs case analysis when used on hypotheses of the form",
+                "`\\/`, turning a goal into two subgoals, each with one of the",
+                "assumptions from our original hypothesis.",
+                "",
+                "Also performs case analysis when used on `a : mynat`, as `destruct a.`",
+                "like a weaker form of `induction`.",
+                "",
+                "Also destructs an existence statement into an expression and",
+                "a hypothesis witnessing the statement of the existence statement."
+            ],
+            "example": [
+                "Lemma and_symm (P Q : Prop) : P /\\ Q -> Q /\\ P.",
+                "Proof.",
+                "    intro h.",
+                "    destruct h as [p q].",
+                "    split; assumption.",
+                "Qed.",
+                "",
+                "Lemma or_symm (P Q : Prop) : (P \/ Q) -> (Q \/ P).",
+                "Proof.",
+                "    intro h.",
+                "    destruct h as [p|q].",
+                "    - ..."
+            ]
+        },
+        {
+            "name": "left / right",
+            "description": [
+                "Turns a goal of the form `\\/` into the specified branch."
+            ],
+            "example": [
+                "Example prop_or (P Q : Prop) : Q -> (P \/ Q).",
+                "Proof.",
+                "    intro q.",
+                "    right.",
+                "    exact q.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "tauto",
+            "description": [
+                "Powerful tactic to prove basic logical statments."
+            ],
+            "example": [
+                "Lemma contra (P Q : Prop) : (P /\\ ~P) -> Q.",
+                "Proof.",
+                "    tauto.",
+                "Qed."
+            ]
+        },
+        {
+            "name": "exfalso",
+            "description": [
+                "Turn any goal into `False`, basically allowing for a",
+                "proof by contradiction."
+            ],
+            "example": [
+                "Lemma contra (P : Prop) : (P /\\ ~P) -> Q.",
+                "Proof.",
+                "    intro h.",
+                "    destruct h as [p np].",
+                "    exfalso",
+                "    exact (np p)",
+                "Qed."
+            ]
+        },
+        {
+            "name": "exfalso",
+            "description": [
+                "Turn a goal of the form `a = b` into a goal of the form `b = a`.",
+                "",
+                "Can also be used to rewrite a hypothesis `h : a = b` into a hypothesis",
+                "of the form `h : b = a` by typing `symmetry in h.`"
+            ],
+            "example": [
+                "Lemma add_one_eq_succ (d : mynat) : d + 1 = S d.",
+                "Proof.",
+                "    symmetry.",
+                "    exact (succ_eq_add_one _).",
+                "Qed."
+            ]
+        },
+        {
+            "name": "revert",
+            "description": [
+                "Removes a variable from our hypotheses and transforms",
+                "the goal into a `forall` statement."
+            ]
+        },
+        {
+            "name": "exists",
+            "description": [
+                "`exists k` converts a goal of the form `exists (c : mynat), <statement involving c>`",
+                "into a goal of the form `<statement involving k>`."
+            ],
+            "example": [
+                "Lemma one_add_le_self (x : mynat) : x <= 1 + x.",
+                "Proof.",
+                "    exists 1.",
+                "    ring.",
+                "Qed."
+            ]
         }
     ],
     "extra_theorems": [

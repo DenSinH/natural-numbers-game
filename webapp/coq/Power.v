@@ -25,7 +25,7 @@ Qed.
 
 (* Level 0 data *)
 (* name `zero_pow_zero` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 0 prologue *)
 (*
@@ -53,7 +53,7 @@ Qed.
 
 (* Level 1 data *)
 (* name `zero_pow_succ` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 1 prologue *)
 Lemma zero_pow_succ (m : mynat) : 0 ^ S m = 0.
@@ -66,7 +66,7 @@ Qed.
 
 (* Level 2 data *)
 (* name `pow_one` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 2 prologue *)
 Lemma pow_one (a : mynat) : a ^ 1 = a.
@@ -81,7 +81,7 @@ Qed.
 
 (* Level 3 data *)
 (* name `one_pow` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 3 prologue *)
 Lemma one_pow (m : mynat) : 1 ^ m = 1.
@@ -97,7 +97,7 @@ Qed.
 
 (* Level 4 data *)
 (* name `pow_add` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 4 prologue *)
 Lemma pow_add (a m n : mynat) : a ^ (m + n) = a ^ m * a ^ n.
@@ -116,7 +116,7 @@ Qed.
 
 (* Level 5 data *)
 (* name `mul_pow` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 5 prologue *)
 Lemma mul_pow (a b n : mynat) : (a * b) ^ n = a ^ n * b ^ n.
@@ -132,7 +132,7 @@ Qed.
 
 (* Level 6 data *)
 (* name `pow_pow` (boss level!) *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems pow_succ *)
 (* Level 6 prologue *)
 (*
@@ -171,7 +171,7 @@ Qed.
 
 (* Level 7 data *)
 (* name `add_squared` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems two_eq_succ_one *)
 (* Level 7 prologue *)
 (*

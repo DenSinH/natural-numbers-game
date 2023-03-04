@@ -60,7 +60,7 @@ Qed.
 
 (* Level 0 data *)
 (* name `zero_mul` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 0 prologue *)
 (*
@@ -91,7 +91,7 @@ Qed.
 
 (* Level 1 data *)
 (* name `mul_one` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 1 prologue *)
 (*
@@ -115,7 +115,7 @@ Qed.
 (* Level 2 *)
 (* Level 2 data *)
 (* name `one_mul` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 2 prologue *)
 (*
@@ -139,7 +139,7 @@ Qed.
 (* Level 3 *)
 (* Level 3 data *)
 (* name `mul_add` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 3 prologue *)
 (*
@@ -167,7 +167,7 @@ Qed.
 (* Level 4 *)
 (* Level 4 data *)
 (* name `mul_assoc` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 4 prologue *)
 (*
@@ -203,21 +203,18 @@ Qed.
 (* Level 5 *)
 (* Level 5 data *)
 (* name `succ_mul` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 5 prologue *)
 (* 
-Another tactic that might come in useful is `f_equal`.
-Basically, if your goal contains an equality of constructors,
-i.e.
-```
-S (x + y + z) = S(x + z + y)
-```
-you can use the tactic `f_equal` to turn it into
-```
-x + y + z = x + z + y
-```
-It might come in useful for this level!
+The `ring` tactic is powerful, but not almighty. For example,
+it does not know that it can rewrite expressions inside of
+the successor function `S`, so if we have a goal of the form
+```S (a + b) = S (b + a)```
+our `ring` tactic won't solve it. Thankfully, we know that
+`succ_eq_add_one`, which we can use to turn this goal into
+```a + b + 1 = b + a + 1```
+which our `ring` tactic can solve!
 *)
 Lemma succ_mul (a b : mynat) : (S a) * b = a * b + b.
 Proof.
@@ -226,7 +223,7 @@ Proof.
     - repeat rewrite mul_succ.
       rewrite H.
       repeat rewrite add_succ.
-      f_equal.
+      repeat rewrite succ_eq_add_one.
       ring.
 Qed.
 (* Level epilogue *)
@@ -235,7 +232,7 @@ Qed.
 (* Level 6 *)
 (* Level 6 data *)
 (* name `add_mul` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 6 prologue *)
 (*
@@ -259,7 +256,7 @@ Qed.
 (* Level 7 *)
 (* Level 7 data *)
 (* name `mul_comm` (boss level!) *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 7 prologue *)
 (*
@@ -283,7 +280,7 @@ more level and we will be able to beef up our `ring` tactic!
 (* Level 8 *)
 (* Level 8 data *)
 (* name `mul_left_assoc` *)
-(* tactics induction *)
+(* tactics ring *)
 (* theorems mul_succ *)
 (* Level 8 prologue *)
 (*

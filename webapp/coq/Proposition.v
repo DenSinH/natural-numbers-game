@@ -1,7 +1,7 @@
 
 (* Level 0 data *)
 (* name the `exact` tactic *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level prologue *)
 (*
@@ -28,7 +28,7 @@ Qed.
 
 (* Level 1 data *)
 (* name the `intro` tactic *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 1 prologue *)
 (*
@@ -52,7 +52,7 @@ Qed.
 
 (* Level 2 data *)
 (* name the `specialize` tactic *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 2 prologue *)
 (*
@@ -88,7 +88,7 @@ Qed.
 
 (* Level 3 data *)
 (* name the `apply` tactic *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 3 prologue *)
 (*
@@ -116,9 +116,18 @@ Qed.
 
 (* Level 4 data *)
 (* name `P -> (Q -> P)` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 4 prologue *)
+(*
+We want to show that `P -> (Q -> P)` where `P` and `Q` are propositions.
+Think about our rule of thumb regarding functions/implications
+and the `intro` tactic, and take a good look at our hypothesis
+to see what we can `exact` or `apply` here. 
+
+Remember you can also use the `intros` tactic to repeatedly 
+introduce hypotheses?
+*)
 Example level4 (P Q : Prop) : P -> (Q -> P).
 Proof.
     intros p q.
@@ -129,9 +138,15 @@ Qed.
 
 (* Level 5 data *)
 (* name `(P -> (Q -> R)) -> ((P -> Q) -> (P -> R))` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 5 prologue *)
+(*
+You can solve this level completely with `intro`, `apply` and `exact`.
+However, it may happen that `apply`ing a function of type `P -> Q -> R`
+produces two subgoals. If you're proving it this way, remember to use
+dashes (these: `-`) to specifiy that you're working in a subgoal!
+*)
 Example level5 (P Q R : Prop) : (P -> (Q -> R)) -> ((P -> Q) -> (P -> R)).
 Proof.
     intros j f p.
@@ -143,10 +158,15 @@ Qed.
 (* Level end *)
 
 (* Level 6 data *)
-(* name `(P -> Q) -> ((Q -> F) -> (P -> F))` *)
-(* tactics induction *)
+(* name `(P -> Q) -> ((Q -> R) -> (P -> R))` *)
+(* tactics apply *)
 (* available false *)
 (* Level 6 prologue *)
+(*
+In Function World, this level did not really mean much, but
+thinking of `->` as implication, this level really shows
+the transitivity of implications!
+*)
 Lemma imp_trans (P Q R : Type) : (P -> Q) -> ((Q -> R) -> (P -> R)).
 Proof.
     intros f g h.
@@ -168,9 +188,33 @@ Require Setoid.
 
 (* Level 7 data *)
 (* name `(P -> Q) -> (~Q -> ~P)` *)
-(* tactics induction *)
+(* tactics unfold *)
 (* available false *)
 (* Level 7 prologue *)
+(*
+There is a `False` `Prop`osition, with no proofs (kind of 
+like the empty type, with no inhabitants). We can use this
+to define "negation" of a proposition (i.e. `~Q`). In reality,
+we have that `~Q` is the same as `Q -> False`. 
+
+I have added a lemma 
+```
+#Lemma not_iff_impl_false (P : Prop) : ~ P <-> (P -> False).
+```
+for you to use in this level. Use it to 
+```
+repeat rewrite not_iff_impl_false.
+```
+in this level to get rid of the `~`.
+
+Later on, it might be easier to use Coq's own way of doing
+this, by writing
+```unfold not```
+which basically `unfold`s the definition of `not` 
+(the `~` operator). 
+
+Try either of these ways in the proof below!
+*)
 Lemma contrapositive (P Q : Prop) : (P -> Q) -> (~Q -> ~P).
 Proof.
     (* requires Setoid *)
@@ -183,14 +227,18 @@ Qed.
 
 (* Level 8 data *)
 (* name a big maze *)
-(* tactics induction *)
+(* tactics unfold *)
 (* available false *)
 (* Level 8 prologue *)
+(*
+Try to solve the maze below using the tactics you have
+learnt in Proposition World and Function World!
+*)
 Example level8 (A B C D E F G H I J K L : Prop)
-(f1 : A -> B) (f2 : B -> E) (f3 : E -> D) (f4 : D -> A) (f5 : E -> F)
-(f6 : F -> C) (f7 : B -> C) (f8 : F -> G) (f9 : G -> J) (f10 : I -> J)
-(f11 : J -> I) (f12 : I -> H) (f13 : E -> H) (f14 : H -> K) (f15 : I -> L)
- : A -> L.
+    (f1 : A -> B) (f2 : B -> E) (f3 : E -> D) (f4 : D -> A) (f5 : E -> F)
+    (f6 : F -> C) (f7 : B -> C) (f8 : F -> G) (f9 : G -> J) (f10 : I -> J)
+    (f11 : J -> I) (f12 : I -> H) (f13 : E -> H) (f14 : H -> K) (f15 : I -> L)
+: A -> L.
 Proof.
     intro a.
     now apply f15, f11, f9, f8, f5, f2, f1.

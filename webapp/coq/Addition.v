@@ -62,9 +62,9 @@ subgoal 1 is:
 ...
 ```
 Now you might wonder what the `[| ? h]` means. To be very precise, in
-our inductive type `mynat` we have two constructors, so `induction` will produce
-two paths. In the first path, we don't get any (new) hypotheses, so we don't
-have to name any variables. In the second path, we get a number and an induction
+our inductive type `mynat` we have two constructors (`0` and `S n`), so `induction`
+will produce two paths. In the first path, we don't get any (new) hypotheses, so we 
+don't have to name any variables. In the second path, we get a number and an induction
 hypothesis. The `?` is the name for the number, indicating we don't really care
 what it is called, we well see it in the subgoal (it will be `n`, the same name as
 the variable we are doing induction over). The second hypothesis is the induction
@@ -123,7 +123,7 @@ Qed.
 
 (* Level 2 data *)
 (* name `succ_add` *)
-(* tactics induction *)
+(* tactics repeat *)
 (* theorems add_succ *)
 (* Level 2 prologue *)
 (*
@@ -155,7 +155,7 @@ Qed.
 
 (* Level 3 data *)
 (* name `add_comm` (boss level) *)
-(* tactics induction *)
+(* tactics repeat *)
 (* theorems add_succ *)
 (* Level 3 prologue *)
 (*
@@ -184,7 +184,7 @@ Qed.
 
 (* Level 4 data *)
 (* name `succ_eq_add_one` *)
-(* tactics induction *)
+(* tactics repeat *)
 (* theorems one_eq_succ_zero *)
 (* Level 4 prologue *)
 (*
@@ -207,7 +207,7 @@ Qed.
 
 (* Level 5 data *)
 (* name `add_right_comm` *)
-(* tactics induction *)
+(* tactics repeat *)
 (* theorems one_eq_succ_zero *)
 (* Level 5 prologue *)
 (*

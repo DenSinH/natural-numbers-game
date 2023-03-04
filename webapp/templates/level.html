@@ -155,10 +155,10 @@
                             </div>
                             <div class="tactic-body hidden">
                                 <h5>Description</h5>
-                                {{ tactic["description"]|format_code_in_text|safe }}
+                                {{ tactic["description"]|join("\n")|format_code_in_text|format_paragraphs_in_text|safe }}
                                 {%- if tactic["example"] -%}
                                 <h5>Example</h5>
-                                <pre class="example">{{ tactic["example"] }}</pre>
+                                <pre class="example">{{ tactic["example"]|join("\n") }}</pre>
                                 {%- endif -%}
                             </div>
                         </div>
@@ -193,7 +193,7 @@
             </div>
             <div class="column main">
                 <h1>{{ world["name"]|format_code_in_text|safe }}</h1>
-                <h3>{{ level["name"]|format_code_in_text|safe }}</h3>
+                <h3>Level {{ level["level"] }}: {{ level["name"]|format_code_in_text|safe }}</h3>
 
                 {{ level["prologue"]|format_paragraphs_in_text|format_code_in_text|safe }}
                 

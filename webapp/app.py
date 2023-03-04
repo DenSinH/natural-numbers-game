@@ -10,6 +10,7 @@ import re
 import os
 
 from coqtop import *
+from game import *
 
 
 def format_code_in_text(text):
@@ -27,8 +28,6 @@ app.static("/static", "./static")
 app.ext.environment.filters["format_code_in_text"]       = format_code_in_text
 app.ext.environment.filters["format_paragraphs_in_text"] = format_paragraphs_in_text
 app.ext.environment.globals["WEBSOCKET_SCHEME"] = "wss" if SECURE else "ws"
-
-from game import *
 
 
 @app.get("/")

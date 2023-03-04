@@ -45,7 +45,7 @@ class Coqtop():
         out, err = await self._proc.communicate()
 
 
-_EMPTY_LAST_TACTIC = re.compile(r"([\s\w,\[\]\|\>?(){}]+)\Z")
+_EMPTY_LAST_TACTIC = re.compile(r"([\s\w,\[\]\|\>?(){};]+)\Z")
 _VERNACULAR_LIST = [
     'Abort', 'About', 'Add', 'All', 'Arguments', 'Asymmetric', 'Axiom',
     'Bind',

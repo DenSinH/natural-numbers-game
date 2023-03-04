@@ -2,7 +2,7 @@ From NaturalNumbers Require Export Base Tutorial Addition Multiplication Power.
 
 (* Level 0 data *)
 (* name the `exact` tactic *)
-(* tactics induction *)
+(* tactics exact *)
 (* available false *)
 (* Level 0 prologue *)
 (*
@@ -58,7 +58,7 @@ Notation "3" := III.
 
 (* Level 1 data *)
 (* name the `intro` tactic *)
-(* tactics induction *)
+(* tactics intro *)
 (* available false *)
 (* Level 1 prologue *)
 (*
@@ -92,7 +92,7 @@ Qed.
 
 (* Level 2 data *)
 (* name the `specialize` tactic *)
-(* tactics induction *)
+(* tactics specialize *)
 (* available false *)
 (* Level 2 prologue *)
 (*
@@ -146,7 +146,7 @@ Qed.
 
 (* Level 3 data *)
 (* name the `apply` tactic *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 3 prologue *)
 (*
@@ -193,7 +193,7 @@ Qed.
 
 (* Level 4 data *)
 (* name `P -> (Q -> P)` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 4 prologue *)
 (*
@@ -227,7 +227,7 @@ Qed.
 
 (* Level 5 data *)
 (* name `(P -> (Q -> R)) -> ((P -> Q) -> (P -> R))` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 5 prologue *)
 (*
@@ -248,7 +248,7 @@ Qed.
 
 (* Level 6 data *)
 (* name `(P -> Q) -> ((Q -> F) -> (P -> F))` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 6 prologue *)
 (*
@@ -272,7 +272,7 @@ Definition empty := Empty_set.
 
 (* Level 7 data *)
 (* name `(P -> Q) -> ((Q -> empty) -> (P -> empty))` *)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 7 prologue *)
 (*
@@ -295,7 +295,7 @@ Qed.
 
 (* Level 8 data *)
 (* name a big maze (boss level!)*)
-(* tactics induction *)
+(* tactics apply *)
 (* available false *)
 (* Level 8 prologue *)
 (*
