@@ -166,6 +166,10 @@
                     location.href = `/level/${node}/0`;
                 }
             });
+
+            window.onresize = function() {
+                network.fit();
+            };
         </script>
     </body>
 </html>
