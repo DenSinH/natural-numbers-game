@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    environment:
+      SECURE: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nng-web.rule=Host(`nng.dennishilhorst.nl`)"
+      - "traefik.http.routers.nng-web.entrypoints=websecure"
+      - "traefik.http.routers.nng-web.tls.certresolver=myresolver"
+      - "traefik.http.services.nng-web.loadbalancer.server.port=5000"
