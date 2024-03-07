@@ -5,6 +5,7 @@ services:
     environment:
       SECURE: 1
       PORT:  5000
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nng-web.rule=Host(`nng.dennishilhorst.nl`)"
